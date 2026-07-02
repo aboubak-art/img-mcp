@@ -26,6 +26,10 @@ const GenerateImageArgsSchema = z.object({
   aspect_ratio: AspectRatioSchema.optional().default("1:1"),
   image_size: ImageSizeSchema.optional().default("1K"),
   output_path: z.string().optional(),
+  images: z
+    .union([z.string(), z.array(z.string())])
+    .optional()
+    .transform((val) => (val === undefined ? undefined : Array.isArray(val) ? val : [val])),
 });
 
 export function registerGenerateImageTool(server: McpServer): void {
@@ -33,7 +37,7 @@ export function registerGenerateImageTool(server: McpServer): void {
     "generate_image",
     {
       description:
-        "Generate images from a text prompt using Google's Nano Banana models via the Gemini API.",
+        "Generate images from a text prompt using Google's Nano Banana models via the Gemini API. Optionally provide reference images as base64 strings or data URIs to guide generation.",
       inputSchema: GenerateImageArgsSchema.shape,
     },
     async (args) => {
@@ -46,6 +50,7 @@ export function registerGenerateImageTool(server: McpServer): void {
         aspectRatio: args.aspect_ratio,
         imageSize: args.image_size,
         outputPath: args.output_path,
+        images: args.images,
       };
 
       const images = await generateImages(options);

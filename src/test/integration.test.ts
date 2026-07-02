@@ -33,6 +33,20 @@ describe("img-mcp server", () => {
     });
   });
 
+  it("exposes an images argument on generate_image", async () => {
+    await withClient(async (client) => {
+      const tools = await client.listTools();
+      const tool = tools.tools.find((t) => t.name === "generate_image");
+      assert.ok(tool, "generate_image tool not found");
+      const schema = tool.inputSchema as { properties?: Record<string, unknown> };
+      assert.ok(schema.properties, "tool schema has no properties");
+      assert.ok(
+        Object.prototype.hasOwnProperty.call(schema.properties, "images"),
+        "generate_image schema is missing images property"
+      );
+    });
+  });
+
   it("returns an error when called without an API key", async () => {
     await withClient(async (client) => {
       const result = (await client.callTool({
