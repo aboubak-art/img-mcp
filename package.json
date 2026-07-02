@@ -26,16 +26,16 @@
     "nano-banana",
     "gemini"
   ],
-  "author": "",
+  "author": "Aboubakar Sidik Faha <me@aboubak.art>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/image-mcp.git"
+    "url": "git+https://github.com/sidikfaha/image-mcp.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/image-mcp/issues"
+    "url": "https://github.com/sidikfaha/image-mcp/issues"
   },
-  "homepage": "https://github.com/yourusername/image-mcp#readme",
+  "homepage": "https://sidikfaha.github.io/image-mcp/",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.8.0",
     "zod": "^3.25.0"

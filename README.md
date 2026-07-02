@@ -1,5 +1,11 @@
 # image-mcp
 
+[![npm version](https://img.shields.io/npm/v/image-mcp.svg?style=flat-square)](https://www.npmjs.com/package/image-mcp)
+[![CI](https://img.shields.io/github/actions/workflow/status/sidikfaha/image-mcp/ci.yml?branch=main&style=flat-square)](https://github.com/sidikfaha/image-mcp/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/sidikfaha/image-mcp?style=flat-square)](./LICENSE)
+
+📚 **[View the website](https://sidikfaha.github.io/image-mcp/)**
+
 An open-source [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that lets AI agents generate images. It currently supports Google's **Nano Banana** image-generation models (Gemini Flash Image) through the Gemini API.
 
 ## Features
