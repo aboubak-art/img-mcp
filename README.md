@@ -1,10 +1,10 @@
-# image-mcp
+# img-mcp
 
-[![npm version](https://img.shields.io/npm/v/image-mcp.svg?style=flat-square)](https://www.npmjs.com/package/image-mcp)
-[![CI](https://img.shields.io/github/actions/workflow/status/sidikfaha/image-mcp/ci.yml?branch=main&style=flat-square)](https://github.com/sidikfaha/image-mcp/actions/workflows/ci.yml)
-[![License](https://img.shields.io/github/license/sidikfaha/image-mcp?style=flat-square)](./LICENSE)
+[![npm version](https://img.shields.io/npm/v/img-mcp.svg?style=flat-square)](https://www.npmjs.com/package/img-mcp)
+[![CI](https://img.shields.io/github/actions/workflow/status/sidikfaha/img-mcp/ci.yml?branch=main&style=flat-square)](https://github.com/sidikfaha/img-mcp/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/sidikfaha/img-mcp?style=flat-square)](./LICENSE)
 
-📚 **[View the website](https://sidikfaha.github.io/image-mcp/)**
+📚 **[View the website](https://sidikfaha.github.io/img-mcp/)**
 
 An open-source [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that lets AI agents generate images. It currently supports Google's **Nano Banana** image-generation models (Gemini Flash Image) through the Gemini API.
 
@@ -13,7 +13,7 @@ An open-source [Model Context Protocol (MCP)](https://modelcontextprotocol.io) s
 - **Text-to-image generation** via MCP tools
 - **Google Nano Banana** support (`gemini-3.1-flash-image`, `gemini-3.1-flash-lite-image`, `gemini-3-pro-image`, etc.)
 - **User-provided API key** — you bring your own Google API key
-- **Zero-install usage** with `npx image-mcp`
+- **Zero-install usage** with `npx img-mcp`
 - **Multiple aspect ratios and image sizes**
 
 ## Installation
@@ -21,14 +21,14 @@ An open-source [Model Context Protocol (MCP)](https://modelcontextprotocol.io) s
 ### Via `npx` (recommended)
 
 ```bash
-npx -y image-mcp
+npx -y img-mcp
 ```
 
 ### Via npm
 
 ```bash
-npm install -g image-mcp
-image-mcp
+npm install -g img-mcp
+img-mcp
 ```
 
 ## Configuration
@@ -55,9 +55,9 @@ Add the server to your MCP host configuration (e.g., Claude Desktop, Cursor, or 
 ```json
 {
   "mcpServers": {
-    "image-mcp": {
+    "img-mcp": {
       "command": "npx",
-      "args": ["-y", "image-mcp"],
+      "args": ["-y", "img-mcp"],
       "env": {
         "GOOGLE_API_KEY": "your-google-api-key"
       }

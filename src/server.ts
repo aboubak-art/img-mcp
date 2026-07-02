@@ -3,7 +3,7 @@ import { registerGenerateImageTool } from "./tools/generate-image.js";
 
 export function createServer(): McpServer {
   const server = new McpServer({
-    name: "image-mcp",
+    name: "img-mcp",
     version: "1.0.0",
   });
 

@@ -10,6 +10,6 @@ async function main(): Promise<void> {
 }
 
 main().catch((error) => {
-  console.error("Fatal error starting image-mcp server:", error);
+  console.error("Fatal error starting img-mcp server:", error);
   process.exit(1);
 });

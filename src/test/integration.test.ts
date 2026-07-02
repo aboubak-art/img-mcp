@@ -24,7 +24,7 @@ async function withClient<T>(callback: (client: Client) => Promise<T>): Promise<
   }
 }
 
-describe("image-mcp server", () => {
+describe("img-mcp server", () => {
   it("lists the generate_image tool", async () => {
     await withClient(async (client) => {
       const tools = await client.listTools();

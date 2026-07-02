@@ -1,11 +1,11 @@
 {
-  "name": "image-mcp",
+  "name": "img-mcp",
   "version": "1.0.0",
   "description": "An open-source MCP server for AI image generation. Supports Google's Nano Banana models via the Gemini API.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "image-mcp": "./dist/index.js"
+    "img-mcp": "./dist/index.js"
   },
   "files": [
     "dist"
@@ -30,12 +30,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sidikfaha/image-mcp.git"
+    "url": "git+https://github.com/sidikfaha/img-mcp.git"
   },
   "bugs": {
-    "url": "https://github.com/sidikfaha/image-mcp/issues"
+    "url": "https://github.com/sidikfaha/img-mcp/issues"
   },
-  "homepage": "https://sidikfaha.github.io/image-mcp/",
+  "homepage": "https://sidikfaha.github.io/img-mcp/",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.8.0",
     "zod": "^3.25.0"
