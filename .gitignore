@@ -1,0 +1,9 @@
+.github/
+.vscode/
+.idea/
+.env
+*.log
+coverage/
+node_modules/
+dist/
+*.tgz

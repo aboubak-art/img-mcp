@@ -1,0 +1,11 @@
+.DS_Store
+src/
+tsconfig.json
+*.test.ts
+*.log
+.env
+.vscode/
+.idea/
+coverage/
+.github/
+*.tgz
