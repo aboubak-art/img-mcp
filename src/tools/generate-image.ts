@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { generateImages, saveImageToDisk } from "../providers/google.js";
+import { generateImages } from "../providers/google.js";
+import { saveImagesToDisk } from "../utils/image.js";
 import { loadConfig } from "../config.js";
 import type { ImageGenerationOptions } from "../types.js";
 
@@ -55,6 +56,15 @@ export function registerGenerateImageTool(server: McpServer): void {
 
       const images = await generateImages(options);
 
+      if (options.outputPath) {
+        const savedPaths = await saveImagesToDisk(images, options.outputPath);
+        const text =
+          savedPaths.length === 1
+            ? `Saved the generated image to ${savedPaths[0]}`
+            : `Saved ${savedPaths.length} generated images to:\n${savedPaths.map((p) => `- ${p}`).join("\n")}`;
+        return { content: [{ type: "text", text }] };
+      }
+
       const content: Array<
         | { type: "image"; data: string; mimeType: string }
         | { type: "text"; text: string }
@@ -63,14 +73,6 @@ export function registerGenerateImageTool(server: McpServer): void {
         data: img.data,
         mimeType: img.mimeType,
       }));
-
-      if (options.outputPath && images[0]) {
-        await saveImageToDisk(images[0], options.outputPath);
-        content.push({
-          type: "text",
-          text: `Saved the first generated image to ${options.outputPath}`,
-        });
-      }
 
       return { content };
     }

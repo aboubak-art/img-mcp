@@ -82,7 +82,7 @@ Generates images from a text prompt.
 | `n` | `number` | No | `1` | Number of images to generate (1–4) |
 | `aspect_ratio` | `string` | No | `1:1` | Aspect ratio (`1:1`, `16:9`, `9:16`, `3:2`, `2:3`, `4:3`, `3:4`, `4:5`, `5:4`, `21:9`) |
 | `image_size` | `string` | No | `1K` | Image size (`512px (05.K)`, `1K`, `2K`, `4K`) |
-| `output_path` | `string` | No | — | If provided, saves the first generated image to this path |
+| `output_path` | `string` | No | — | If provided, saves the generated image(s) to disk at this path and returns the file path(s) instead of base64 |
 | `images` | `string` or `string[]` | No | — | One or more reference images as base64 strings or data URIs (`data:image/png;base64,...`) |
 
 **Example**
@@ -108,6 +108,11 @@ Generates images from a text prompt.
   ]
 }
 ```
+
+**Output behavior**
+
+- If `output_path` is provided, the generated image(s) are written to disk and the tool returns the saved file path(s). When `n` is greater than 1, additional images are saved with numbered suffixes (e.g., `image_1.png`, `image_2.png`).
+- If `output_path` is omitted, the generated image(s) are returned as base64 content.
 
 ## Development
 

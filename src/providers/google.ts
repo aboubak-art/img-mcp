@@ -1,4 +1,3 @@
-import { writeFile } from "node:fs/promises";
 import type {
   GeneratedImage,
   GeminiInteractionInput,
@@ -171,12 +170,4 @@ export async function generateImages(
   }
 
   return images;
-}
-
-export async function saveImageToDisk(
-  image: GeneratedImage,
-  outputPath: string
-): Promise<void> {
-  const buffer = Buffer.from(image.data, "base64");
-  await writeFile(outputPath, buffer);
 }
