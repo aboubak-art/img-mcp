@@ -15,6 +15,7 @@
         <a href="#features">Features</a>
         <a href="#install">Install</a>
         <a href="#usage">Usage</a>
+        <a href="#cli-tools">CLI tools</a>
         <a href="https://github.com/aboubak-art/img-mcp" target="_blank" rel="noopener">GitHub</a>
       </nav>
     </div>
@@ -119,6 +120,135 @@ npx -y img-mcp</code></pre>
             <span>Example prompt</span>
           </div>
           <pre><code>Generate an image of a futuristic city at sunset, 16:9 aspect ratio, 2K resolution.</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="cli-tools" id="cli-tools">
+      <div class="container">
+        <h2>Use with CLI coding agents</h2>
+        <p class="section-lead">
+          Connect <strong>img-mcp</strong> to your favorite terminal-based AI coding tools.
+        </p>
+
+        <div class="tool-grid">
+          <article class="tool-card">
+            <div class="tool-header">
+              <h3>Claude Code</h3>
+              <span class="tool-config">~/.claude/config.json</span>
+            </div>
+            <div class="code-block">
+              <div class="code-header">
+                <span>JSON</span>
+                <button class="copy-button" data-target="claude-code-config" type="button">Copy</button>
+              </div>
+              <pre><code id="claude-code-config">{
+  "mcpServers": {
+    "img-mcp": {
+      "command": "npx",
+      "args": ["-y", "img-mcp"],
+      "env": {
+        "GOOGLE_API_KEY": "your-google-api-key"
+      }
+    }
+  }
+}</code></pre>
+            </div>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-header">
+              <h3>Claude Desktop</h3>
+              <span class="tool-config">claude_desktop_config.json</span>
+            </div>
+            <div class="code-block">
+              <div class="code-header">
+                <span>JSON</span>
+                <button class="copy-button" data-target="claude-desktop-config" type="button">Copy</button>
+              </div>
+              <pre><code id="claude-desktop-config">{
+  "mcpServers": {
+    "img-mcp": {
+      "command": "npx",
+      "args": ["-y", "img-mcp"],
+      "env": {
+        "GOOGLE_API_KEY": "your-google-api-key"
+      }
+    }
+  }
+}</code></pre>
+            </div>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-header">
+              <h3>Kimi Code</h3>
+              <span class="tool-config">~/.kimi-code/mcp.json</span>
+            </div>
+            <div class="code-block">
+              <div class="code-header">
+                <span>JSON</span>
+                <button class="copy-button" data-target="kimi-config" type="button">Copy</button>
+              </div>
+              <pre><code id="kimi-config">{
+  "mcpServers": {
+    "img-mcp": {
+      "command": "npx",
+      "args": ["-y", "img-mcp"],
+      "env": {
+        "GOOGLE_API_KEY": "your-google-api-key"
+      }
+    }
+  }
+}</code></pre>
+            </div>
+            <p class="tool-alt">Or use the CLI: <code>kimi mcp add --transport stdio img-mcp -- npx -y img-mcp</code></p>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-header">
+              <h3>OpenCode</h3>
+              <span class="tool-config">~/.config/opencode/opencode.json</span>
+            </div>
+            <div class="code-block">
+              <div class="code-header">
+                <span>JSON</span>
+                <button class="copy-button" data-target="opencode-config" type="button">Copy</button>
+              </div>
+              <pre><code id="opencode-config">{
+  "mcp": {
+    "img-mcp": {
+      "type": "local",
+      "command": ["npx", "-y", "img-mcp"],
+      "env": {
+        "GOOGLE_API_KEY": "your-google-api-key"
+      }
+    }
+  }
+}</code></pre>
+            </div>
+            <p class="tool-alt">Or use the CLI: <code>opencode mcp add</code></p>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-header">
+              <h3>OpenAI Codex CLI</h3>
+              <span class="tool-config">~/.codex/config.toml</span>
+            </div>
+            <div class="code-block">
+              <div class="code-header">
+                <span>TOML</span>
+                <button class="copy-button" data-target="codex-config" type="button">Copy</button>
+              </div>
+              <pre><code id="codex-config">[mcp_servers.img-mcp]
+command = "npx"
+args = ["-y", "img-mcp"]
+
+[mcp_servers.img-mcp.env]
+GOOGLE_API_KEY = "your-google-api-key"</code></pre>
+            </div>
+            <p class="tool-alt">Or use the CLI: <code>codex mcp add img-mcp --env GOOGLE_API_KEY=your-google-api-key -- npx -y img-mcp</code></p>
+          </article>
         </div>
       </div>
     </section>

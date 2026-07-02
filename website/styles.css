@@ -276,6 +276,69 @@ td {
   font-size: 0.9rem;
 }
 
+.cli-tools {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.section-lead {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  max-width: 640px;
+}
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.tool-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tool-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tool-header h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.tool-config {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    monospace;
+}
+
+.tool-card .code-block {
+  margin: 0;
+}
+
+.tool-alt {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.tool-alt code {
+  font-size: 0.8rem;
+}
+
 @media (max-width: 640px) {
   .nav {
     gap: 14px;
@@ -288,5 +351,9 @@ td {
 
   .hero-lead {
     font-size: 1.05rem;
+  }
+
+  .tool-grid {
+    grid-template-columns: 1fr;
   }
 }
