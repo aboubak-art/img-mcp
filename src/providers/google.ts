@@ -67,16 +67,43 @@ export async function generateImages(
     },
   };
 
-  const response = await fetch(config.apiEndpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-goog-api-key": config.googleApiKey,
-    },
-    body: JSON.stringify(requestBody),
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 60_000);
 
-  const responseData = (await response.json()) as GeminiInteractionResponse;
+  let response: Response;
+  try {
+    response = await fetch(config.apiEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": config.googleApiKey,
+      },
+      body: JSON.stringify(requestBody),
+      signal: controller.signal,
+    });
+  } catch (error) {
+    clearTimeout(timeout);
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new Error(
+        `Request to ${config.apiEndpoint} timed out after 60 seconds.`
+      );
+    }
+    throw new Error(
+      `Request to ${config.apiEndpoint} failed: ${error instanceof Error ? error.message : String(error)}`
+    );
+  }
+  clearTimeout(timeout);
+
+  const responseText = await response.text();
+
+  let responseData: GeminiInteractionResponse;
+  try {
+    responseData = JSON.parse(responseText) as GeminiInteractionResponse;
+  } catch {
+    throw new Error(
+      `Google API returned non-JSON response (status ${response.status}): ${responseText}`
+    );
+  }
 
   if (!response.ok) {
     const message = responseData.error?.message ?? response.statusText;
@@ -98,7 +125,13 @@ export async function generateImages(
   }
 
   if (images.length === 0) {
-    throw new Error("No image was returned by the Google API.");
+    throw new Error(
+      `No image was returned by the Google API. Response: ${JSON.stringify(
+        responseData,
+        null,
+        2
+      )}`
+    );
   }
 
   return images;
