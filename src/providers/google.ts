@@ -122,6 +122,17 @@ export async function generateImages(
       data: responseData.output_image.data,
       mimeType: responseData.output_image.mime_type,
     });
+  } else if (responseData.steps) {
+    for (const step of responseData.steps) {
+      if (step.type !== "model_output" || !step.content) continue;
+      for (const item of step.content) {
+        if (item.type === "image" && item.data && item.mime_type) {
+          images.push({ data: item.data, mimeType: item.mime_type });
+          if (images.length >= options.n) break;
+        }
+      }
+      if (images.length >= options.n) break;
+    }
   }
 
   if (images.length === 0) {
