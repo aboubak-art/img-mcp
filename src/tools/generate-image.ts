@@ -29,10 +29,13 @@ const GenerateImageArgsSchema = z.object({
 });
 
 export function registerGenerateImageTool(server: McpServer): void {
-  server.tool(
+  server.registerTool(
     "generate_image",
-    "Generate images from a text prompt using Google's Nano Banana models via the Gemini API.",
-    GenerateImageArgsSchema.shape,
+    {
+      description:
+        "Generate images from a text prompt using Google's Nano Banana models via the Gemini API.",
+      inputSchema: GenerateImageArgsSchema.shape,
+    },
     async (args) => {
       const config = loadConfig();
 
