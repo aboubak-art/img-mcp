@@ -5,6 +5,7 @@ export interface ImageGenerationOptions {
   aspectRatio: string;
   imageSize: string;
   outputPath?: string;
+  images?: string[];
 }
 
 export interface GeneratedImage {

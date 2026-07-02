@@ -1,11 +1,27 @@
 import { writeFile } from "node:fs/promises";
 import type {
   GeneratedImage,
+  GeminiInteractionInput,
   GeminiInteractionRequest,
   GeminiInteractionResponse,
   ImageGenerationOptions,
 } from "../types.js";
 import { loadConfig } from "../config.js";
+
+interface ParsedImageInput {
+  data: string;
+  mimeType: string;
+}
+
+export function parseImageInput(input: string): ParsedImageInput {
+  const dataUriMatch = /^data:([a-zA-Z0-9]+\/[a-zA-Z0-9+.-]+);base64,(.*)$/.exec(
+    input
+  );
+  if (dataUriMatch) {
+    return { data: dataUriMatch[2] as string, mimeType: dataUriMatch[1] as string };
+  }
+  return { data: input, mimeType: "image/png" };
+}
 
 const SUPPORTED_ASPECT_RATIOS = [
   "1:1",
@@ -56,9 +72,18 @@ export async function generateImages(
   validateImageGenerationOptions(options);
 
   const config = loadConfig();
+
+  const input: GeminiInteractionInput[] = [{ type: "text", text: options.prompt }];
+  if (options.images) {
+    for (const image of options.images) {
+      const parsed = parseImageInput(image);
+      input.push({ type: "image", data: parsed.data, mime_type: parsed.mimeType });
+    }
+  }
+
   const requestBody: GeminiInteractionRequest = {
     model: options.model,
-    input: [{ type: "text", text: options.prompt }],
+    input,
     response_format: {
       type: "image",
       mime_type: "image/jpeg",

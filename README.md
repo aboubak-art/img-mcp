@@ -11,6 +11,7 @@ An open-source [Model Context Protocol (MCP)](https://modelcontextprotocol.io) s
 ## Features
 
 - **Text-to-image generation** via MCP tools
+- **Image-to-image / reference-image generation** by passing base64 images or data URIs
 - **Google Nano Banana** support (`gemini-3.1-flash-image`, `gemini-3.1-flash-lite-image`, `gemini-3-pro-image`, etc.)
 - **User-provided API key** — you bring your own Google API key
 - **Zero-install usage** with `npx img-mcp`
@@ -82,6 +83,7 @@ Generates images from a text prompt.
 | `aspect_ratio` | `string` | No | `1:1` | Aspect ratio (`1:1`, `16:9`, `9:16`, `3:2`, `2:3`, `4:3`, `3:4`, `4:5`, `5:4`, `21:9`) |
 | `image_size` | `string` | No | `1K` | Image size (`512px (05.K)`, `1K`, `2K`, `4K`) |
 | `output_path` | `string` | No | — | If provided, saves the first generated image to this path |
+| `images` | `string` or `string[]` | No | — | One or more reference images as base64 strings or data URIs (`data:image/png;base64,...`) |
 
 **Example**
 
@@ -91,6 +93,19 @@ Generates images from a text prompt.
   "aspect_ratio": "16:9",
   "image_size": "2K",
   "n": 1
+}
+```
+
+**Example with reference images**
+
+```json
+{
+  "prompt": "Generate a portrait in the same style as the reference photo",
+  "aspect_ratio": "1:1",
+  "image_size": "1K",
+  "images": [
+    "data:image/png;base64,iVBORw0KGgo..."
+  ]
 }
 ```
 
