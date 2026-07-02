@@ -37,9 +37,27 @@ export interface GeminiImageBlock {
   mime_type: string;
 }
 
+export interface GeminiStepContent {
+  type: "image" | "text";
+  data?: string;
+  mime_type?: string;
+  text?: string;
+}
+
+export interface GeminiStep {
+  type: "thought" | "model_output";
+  signature?: string;
+  content?: GeminiStepContent[];
+}
+
 export interface GeminiInteractionResponse {
+  id?: string;
+  status?: string;
+  object?: string;
+  model?: string;
   output_image?: GeminiImageBlock;
   output_images?: GeminiImageBlock[];
+  steps?: GeminiStep[];
   error?: {
     code: number;
     message: string;
