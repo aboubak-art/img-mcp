@@ -30,12 +30,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sidikfaha/img-mcp.git"
+    "url": "git+https://github.com/aboubak-art/img-mcp.git"
   },
   "bugs": {
-    "url": "https://github.com/sidikfaha/img-mcp/issues"
+    "url": "https://github.com/aboubak-art/img-mcp/issues"
   },
-  "homepage": "https://sidikfaha.github.io/img-mcp/",
+  "homepage": "https://aboubak-art.github.io/img-mcp/",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.8.0",
     "zod": "^3.25.0"
