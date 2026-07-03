@@ -54,6 +54,7 @@ export default defineConfig({
           { text: "convert_image", link: "/docs/tools/convert.html" },
           { text: "crop_image", link: "/docs/tools/crop.html" },
           { text: "compress_image", link: "/docs/tools/compress.html" },
+          { text: "remove_background", link: "/docs/tools/remove-background.html" },
         ],
       },
       {

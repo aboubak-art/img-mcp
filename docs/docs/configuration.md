@@ -44,14 +44,14 @@ Most hosts let you define environment variables directly in the server config:
 }
 ```
 
-## Optional dependency: transparent backgrounds
+## Optional dependency: background removal
 
-The `transparent_background` feature uses `@imgly/background-removal-node`, which is licensed under AGPL-3.0. To keep img-mcp under MIT, this package is an optional peer dependency.
+The `remove_background` tool uses `@imgly/background-removal-node`, which is licensed under AGPL-3.0. To keep img-mcp under MIT, this package is an optional peer dependency.
 
-Install it to enable transparent background generation:
+Install it to enable background removal:
 
 ```bash
 npm install -g @imgly/background-removal-node
 ```
 
-If the package is missing when `transparent_background` is requested, img-mcp returns an error with installation instructions.
+If the package is missing when `remove_background` is called, img-mcp returns an error with installation instructions.

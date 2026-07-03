@@ -12,8 +12,7 @@ The main tool exposed by img-mcp. It generates images from text prompts and can 
 | `aspect_ratio` | `string` | No | `1:1` | Output aspect ratio. |
 | `image_size` | `string` | No | `1K` | Output resolution. Larger sizes may require a model such as `gemini-3-pro-image`. |
 | `output_path` | `string` | No | — | If provided, saves the first image to disk and returns the file path. |
-| `images` | `string` or `string[]` | No | — | One or more reference images as base64 strings or data URIs. |
-| `transparent_background` | `boolean` | No | `false` | Generate a PNG with a transparent background. |
+| `images` | `string` or `string[]` | No | — | One or more reference images as base64 strings, data URIs, file paths, or URLs. |
 
 ### Supported aspect ratios
 
@@ -35,7 +34,6 @@ The main tool exposed by img-mcp. It generates images from text prompts and can 
 - If `output_path` is omitted, the generated image is returned as a base64 string.
 - If `output_path` is provided, the image is saved to that path and the file path is returned.
 - When `n` is greater than 1, additional images are saved with numbered suffixes (for example, `image_1.png`, `image_2.png`).
-- When `transparent_background` is `true`, the output is always PNG and `output_path` is rewritten to use the `.png` extension.
 
 ## Examples
 
@@ -74,21 +72,8 @@ The main tool exposed by img-mcp. It generates images from text prompts and can 
 }
 ```
 
-### Transparent background
-
-```json
-{
-  "prompt": "A sleek wireless headphones product shot on a clean white surface",
-  "aspect_ratio": "1:1",
-  "image_size": "1K",
-  "transparent_background": true,
-  "output_path": "/tmp/headphones.png"
-}
-```
-
 ## Best practices
 
 - Be specific in your prompts. Descriptions of lighting, style, camera angle, and mood usually produce better results.
 - Use reference images when you need consistency across multiple generations.
 - Use `output_path` when you want to chain image generation with other tools or workflows on your local machine.
-- Enable `transparent_background` only when you need it, because it requires the optional `@imgly/background-removal-node` package.
