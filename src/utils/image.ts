@@ -102,6 +102,53 @@ export interface ResizeOptions {
   quality?: number;
 }
 
+export interface ConvertOptions {
+  image: string;
+  format: "jpeg" | "png" | "webp" | "avif" | "gif";
+  quality?: number;
+}
+
+async function applyOutputFormat(
+  pipeline: sharp.Sharp,
+  outputFormat: "jpeg" | "png" | "webp" | "avif" | "gif",
+  quality?: number
+): Promise<GeneratedImage> {
+  let outputBuffer: Buffer;
+  let outputMimeType: string;
+
+  switch (outputFormat) {
+    case "jpeg":
+      outputBuffer = await pipeline
+        .jpeg({ quality: quality ?? 80, mozjpeg: true })
+        .toBuffer();
+      outputMimeType = "image/jpeg";
+      break;
+    case "webp":
+      outputBuffer = await pipeline
+        .webp({ quality: quality ?? 80 })
+        .toBuffer();
+      outputMimeType = "image/webp";
+      break;
+    case "avif":
+      outputBuffer = await pipeline
+        .avif({ quality: quality ?? 80 })
+        .toBuffer();
+      outputMimeType = "image/avif";
+      break;
+    case "gif":
+      outputBuffer = await pipeline.gif().toBuffer();
+      outputMimeType = "image/gif";
+      break;
+    case "png":
+    default:
+      outputBuffer = await pipeline.png({ quality }).toBuffer();
+      outputMimeType = "image/png";
+      break;
+  }
+
+  return { data: outputBuffer.toString("base64"), mimeType: outputMimeType };
+}
+
 export async function resizeImage(options: ResizeOptions): Promise<GeneratedImage> {
   const { data, mimeType } = await loadImageInput(options.image);
   const inputBuffer = Buffer.from(data, "base64");
@@ -136,44 +183,18 @@ export async function resizeImage(options: ResizeOptions): Promise<GeneratedImag
   }
 
   const outputFormat = options.format ?? extensionFromMimeType(mimeType);
-  let outputBuffer: Buffer;
-  let outputMimeType: string;
-
-  switch (outputFormat) {
-    case "jpeg":
-      outputBuffer = await pipeline
-        .jpeg({ quality: options.quality ?? 80, mozjpeg: true })
-        .toBuffer();
-      outputMimeType = "image/jpeg";
-      break;
-    case "webp":
-      outputBuffer = await pipeline
-        .webp({ quality: options.quality ?? 80 })
-        .toBuffer();
-      outputMimeType = "image/webp";
-      break;
-    case "avif":
-      outputBuffer = await pipeline
-        .avif({ quality: options.quality ?? 80 })
-        .toBuffer();
-      outputMimeType = "image/avif";
-      break;
-    case "gif":
-      outputBuffer = await pipeline.gif().toBuffer();
-      outputMimeType = "image/gif";
-      break;
-    case "png":
-    default:
-      outputBuffer = await pipeline.png({ quality: options.quality }).toBuffer();
-      outputMimeType = "image/png";
-      break;
-  }
-
-  return { data: outputBuffer.toString("base64"), mimeType: outputMimeType };
+  return applyOutputFormat(pipeline, outputFormat, options.quality);
 }
 
-function extensionFromMimeType(mimeType: string): string {
-  const map: Record<string, string> = {
+export async function convertImage(options: ConvertOptions): Promise<GeneratedImage> {
+  const { data } = await loadImageInput(options.image);
+  const inputBuffer = Buffer.from(data, "base64");
+  const pipeline = sharp(inputBuffer);
+  return applyOutputFormat(pipeline, options.format, options.quality);
+}
+
+function extensionFromMimeType(mimeType: string): "jpeg" | "png" | "webp" | "avif" | "gif" {
+  const map: Record<string, "jpeg" | "png" | "webp" | "avif" | "gif"> = {
     "image/jpeg": "jpeg",
     "image/png": "png",
     "image/webp": "webp",

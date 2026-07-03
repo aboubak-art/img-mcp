@@ -31,6 +31,7 @@ describe("img-mcp server", () => {
       const names = tools.tools.map((tool) => tool.name);
       assert.ok(names.includes("generate_image"));
       assert.ok(names.includes("resize_image"));
+      assert.ok(names.includes("convert_image"));
     });
   });
 

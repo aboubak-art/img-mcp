@@ -40,7 +40,11 @@ export default defineConfig({
       },
       {
         text: "Tools",
-        items: [{ text: "generate_image", link: "/tools/generate-image" }],
+        items: [
+          { text: "generate_image", link: "/tools/generate-image" },
+          { text: "resize_image", link: "/tools/resize" },
+          { text: "convert_image", link: "/tools/convert" },
+        ],
       },
       {
         text: "Providers",
