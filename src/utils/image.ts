@@ -193,6 +193,61 @@ export async function convertImage(options: ConvertOptions): Promise<GeneratedIm
   return applyOutputFormat(pipeline, options.format, options.quality);
 }
 
+export interface CropOptions {
+  image: string;
+  left?: number;
+  top?: number;
+  width?: number;
+  height?: number;
+  gravity?:
+    | "north"
+    | "northeast"
+    | "east"
+    | "southeast"
+    | "south"
+    | "southwest"
+    | "west"
+    | "northwest"
+    | "center"
+    | "centre"
+    | "attention"
+    | "entropy";
+  format?: "jpeg" | "png" | "webp" | "avif" | "gif";
+  quality?: number;
+}
+
+export async function cropImage(options: CropOptions): Promise<GeneratedImage> {
+  const { data, mimeType } = await loadImageInput(options.image);
+  const inputBuffer = Buffer.from(data, "base64");
+  let pipeline = sharp(inputBuffer);
+
+  if (
+    options.left !== undefined &&
+    options.top !== undefined &&
+    options.width !== undefined &&
+    options.height !== undefined
+  ) {
+    pipeline = pipeline.extract({
+      left: options.left,
+      top: options.top,
+      width: options.width,
+      height: options.height,
+    });
+  } else if (options.width !== undefined && options.height !== undefined && options.gravity) {
+    pipeline = pipeline.resize(options.width, options.height, {
+      fit: "cover",
+      position: options.gravity,
+    });
+  } else {
+    throw new Error(
+      "Provide either left/top/width/height for an exact crop, or width/height/gravity for a smart crop"
+    );
+  }
+
+  const outputFormat = options.format ?? extensionFromMimeType(mimeType);
+  return applyOutputFormat(pipeline, outputFormat, options.quality);
+}
+
 function extensionFromMimeType(mimeType: string): "jpeg" | "png" | "webp" | "avif" | "gif" {
   const map: Record<string, "jpeg" | "png" | "webp" | "avif" | "gif"> = {
     "image/jpeg": "jpeg",

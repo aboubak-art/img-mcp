@@ -32,6 +32,7 @@ describe("img-mcp server", () => {
       assert.ok(names.includes("generate_image"));
       assert.ok(names.includes("resize_image"));
       assert.ok(names.includes("convert_image"));
+      assert.ok(names.includes("crop_image"));
     });
   });
 
