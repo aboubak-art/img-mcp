@@ -14,6 +14,7 @@ An open-source [Model Context Protocol (MCP)](https://modelcontextprotocol.io) s
 - **Image-to-image / reference-image generation** by passing base64 images or data URIs
 - **Transparent background generation** using `@imgly/background-removal-node`
 - **Google Nano Banana** support (`gemini-3.1-flash-image`, `gemini-3.1-flash-lite-image`, `gemini-3-pro-image`, etc.)
+- **Local image resizing** — scale, crop, and convert formats without an API key
 - **User-provided API key** — you bring your own Google API key
 - **Zero-install usage** with `npx img-mcp`
 - **Multiple aspect ratios and image sizes**
@@ -144,6 +145,66 @@ Generates images from a text prompt.
 - If `output_path` is provided, the generated image(s) are written to disk and the tool returns the saved file path(s). When `n` is greater than 1, additional images are saved with numbered suffixes (e.g., `image_1.png`, `image_2.png`).
 - If `output_path` is omitted, the generated image(s) are returned as base64 content.
 - When `transparent_background` is `true`, the output is always a PNG with transparency and `output_path` is rewritten to use the `.png` extension.
+
+### `resize_image`
+
+Resizes an image using fast local processing (powered by `sharp`). Scale by width, height, percentage, or fit mode.
+
+**Arguments**
+
+| Argument | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `image` | `string` | Yes | — | Input image as a base64 string or data URI (`data:image/png;base64,...`) |
+| `width` | `number` | No | — | Target width in pixels |
+| `height` | `number` | No | — | Target height in pixels |
+| `scale` | `number` | No | — | Scale factor (e.g., `0.5` for 50%) |
+| `fit` | `string` | No | `cover` | Fit mode when both `width` and `height` are provided: `cover`, `contain`, `fill`, `inside`, `outside` |
+| `output_path` | `string` | No | — | If provided, saves the resized image to disk and returns the file path |
+| `format` | `string` | No | — | Output format: `jpeg`, `png`, `webp`, `avif`, `gif`. Defaults to the input format |
+| `quality` | `number` | No | — | Output quality for lossy formats (`1`–`100`) |
+
+At least one of `width`, `height`, or `scale` must be provided.
+
+**Examples**
+
+Scale to a specific width:
+
+```json
+{
+  "image": "data:image/png;base64,iVBORw0KGgo...",
+  "width": 800
+}
+```
+
+Resize to exact dimensions with cover fit:
+
+```json
+{
+  "image": "data:image/png;base64,iVBORw0KGgo...",
+  "width": 800,
+  "height": 600,
+  "fit": "cover"
+}
+```
+
+Scale by percentage and convert to WebP:
+
+```json
+{
+  "image": "data:image/png;base64,iVBORw0KGgo...",
+  "scale": 0.5,
+  "format": "webp",
+  "quality": 85,
+  "output_path": "/tmp/resized.webp"
+}
+```
+
+**Output behavior**
+
+- If `output_path` is provided, the resized image is written to disk and the tool returns the saved file path.
+- If `output_path` is omitted, the resized image is returned as base64 content.
+- When only `width` or `height` is provided, the aspect ratio is preserved.
+- When `format` is omitted, the output format matches the input image format.
 
 ## Development
 
