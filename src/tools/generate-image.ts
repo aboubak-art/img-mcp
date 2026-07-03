@@ -1,7 +1,12 @@
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { generateImages } from "../providers/google.js";
-import { saveImagesToDisk } from "../utils/image.js";
+import {
+  appendTransparentBackgroundPrompt,
+  ensurePngExtension,
+  removeImageBackground,
+  saveImagesToDisk,
+} from "../utils/image.js";
 import { loadConfig } from "../config.js";
 import type { ImageGenerationOptions } from "../types.js";
 
@@ -31,6 +36,7 @@ const GenerateImageArgsSchema = z.object({
     .union([z.string(), z.array(z.string())])
     .optional()
     .transform((val) => (val === undefined ? undefined : Array.isArray(val) ? val : [val])),
+  transparent_background: z.boolean().optional().default(false),
 });
 
 export function registerGenerateImageTool(server: McpServer): void {
@@ -38,26 +44,38 @@ export function registerGenerateImageTool(server: McpServer): void {
     "generate_image",
     {
       description:
-        "Generate images from a text prompt using Google's Nano Banana models via the Gemini API. Optionally provide reference images as base64 strings or data URIs to guide generation.",
+        "Generate images from a text prompt using Google's Nano Banana models via the Gemini API. Optionally provide reference images as base64 strings or data URIs to guide generation, and optionally remove the background to produce transparent PNGs.",
       inputSchema: GenerateImageArgsSchema.shape,
     },
     async (args) => {
       const config = loadConfig();
 
+      const prompt = args.transparent_background
+        ? appendTransparentBackgroundPrompt(args.prompt)
+        : args.prompt;
+
       const options: ImageGenerationOptions = {
-        prompt: args.prompt,
+        prompt,
         model: args.model ?? config.googleImageModel,
         n: args.n,
         aspectRatio: args.aspect_ratio,
         imageSize: args.image_size,
         outputPath: args.output_path,
         images: args.images,
+        transparentBackground: args.transparent_background,
       };
 
-      const images = await generateImages(options);
+      let images = await generateImages(options);
+
+      if (options.transparentBackground) {
+        images = await Promise.all(images.map(removeImageBackground));
+      }
 
       if (options.outputPath) {
-        const savedPaths = await saveImagesToDisk(images, options.outputPath);
+        const outputPath = options.transparentBackground
+          ? ensurePngExtension(options.outputPath)
+          : options.outputPath;
+        const savedPaths = await saveImagesToDisk(images, outputPath);
         const text =
           savedPaths.length === 1
             ? `Saved the generated image to ${savedPaths[0]}`

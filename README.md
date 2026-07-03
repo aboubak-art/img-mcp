@@ -12,6 +12,7 @@ An open-source [Model Context Protocol (MCP)](https://modelcontextprotocol.io) s
 
 - **Text-to-image generation** via MCP tools
 - **Image-to-image / reference-image generation** by passing base64 images or data URIs
+- **Transparent background generation** using `@imgly/background-removal-node`
 - **Google Nano Banana** support (`gemini-3.1-flash-image`, `gemini-3.1-flash-lite-image`, `gemini-3-pro-image`, etc.)
 - **User-provided API key** — you bring your own Google API key
 - **Zero-install usage** with `npx img-mcp`
@@ -84,6 +85,7 @@ Generates images from a text prompt.
 | `image_size` | `string` | No | `1K` | Image size (`512px (05.K)`, `1K`, `2K`, `4K`) |
 | `output_path` | `string` | No | — | If provided, saves the generated image(s) to disk at this path and returns the file path(s) instead of base64 |
 | `images` | `string` or `string[]` | No | — | One or more reference images as base64 strings or data URIs (`data:image/png;base64,...`) |
+| `transparent_background` | `boolean` | No | `false` | When `true`, the prompt is rewritten to request a bright green background and the background is removed after generation; output is always PNG |
 
 **Example**
 
@@ -109,10 +111,23 @@ Generates images from a text prompt.
 }
 ```
 
+**Example with transparent background**
+
+```json
+{
+  "prompt": "A golden retriever wearing sunglasses",
+  "aspect_ratio": "1:1",
+  "image_size": "1K",
+  "transparent_background": true,
+  "output_path": "/tmp/dog.png"
+}
+```
+
 **Output behavior**
 
 - If `output_path` is provided, the generated image(s) are written to disk and the tool returns the saved file path(s). When `n` is greater than 1, additional images are saved with numbered suffixes (e.g., `image_1.png`, `image_2.png`).
 - If `output_path` is omitted, the generated image(s) are returned as base64 content.
+- When `transparent_background` is `true`, the output is always a PNG with transparency and `output_path` is rewritten to use the `.png` extension.
 
 ## Development
 

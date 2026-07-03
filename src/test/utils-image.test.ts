@@ -3,7 +3,12 @@ import assert from "node:assert";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { saveImagesToDisk } from "../utils/image.js";
+import {
+  appendTransparentBackgroundPrompt,
+  ensurePngExtension,
+  saveImagesToDisk,
+  TRANSPARENT_BACKGROUND_COLOR,
+} from "../utils/image.js";
 
 async function withTempDir<T>(callback: (dir: string) => Promise<T>): Promise<T> {
   const dir = await mkdtemp(join(tmpdir(), "img-mcp-test-"));
@@ -53,6 +58,29 @@ describe("utils/image", () => {
         const paths = await saveImagesToDisk([], join(dir, "image.png"));
         assert.deepStrictEqual(paths, []);
       });
+    });
+  });
+
+  describe("appendTransparentBackgroundPrompt", () => {
+    it("appends the chroma key background instruction", () => {
+      const result = appendTransparentBackgroundPrompt("a cat sitting on a box");
+      assert.ok(result.includes("a cat sitting on a box"));
+      assert.ok(result.includes(TRANSPARENT_BACKGROUND_COLOR));
+      assert.ok(result.includes("solid, uniform bright green background"));
+    });
+  });
+
+  describe("ensurePngExtension", () => {
+    it("keeps the path unchanged when it already ends with .png", () => {
+      assert.strictEqual(ensurePngExtension("/tmp/image.png"), "/tmp/image.png");
+    });
+
+    it("replaces non-png extensions with .png", () => {
+      assert.strictEqual(ensurePngExtension("/tmp/image.jpg"), "/tmp/image.png");
+    });
+
+    it("appends .png when the path has no extension", () => {
+      assert.strictEqual(ensurePngExtension("/tmp/image"), "/tmp/image.png");
     });
   });
 });

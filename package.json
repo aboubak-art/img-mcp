@@ -37,6 +37,7 @@
   },
   "homepage": "https://aboubak-art.github.io/img-mcp/",
   "dependencies": {
+    "@imgly/background-removal-node": "^1.4.5",
     "@modelcontextprotocol/sdk": "^1.8.0",
     "zod": "^3.25.0"
   },
