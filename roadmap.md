@@ -16,9 +16,9 @@ img-mcp is becoming a general-purpose image manipulation MCP server. Generation 
 The priority is robust, dependency-light Node.js operations that work without an API key.
 
 - [x] **Resize** — scale by width, height, percentage, or fit mode (`cover`, `contain`, `fill`).
-- [ ] **Crop** — crop by coordinates/dimensions or gravity-based smart crop.
-- [ ] **Compress / optimize** — quality, format-specific tuning, and target file-size optimization.
-- [ ] **Convert formats** — JPEG, PNG, WebP, AVIF, GIF, BMP, TIFF.
+- [x] **Crop** — crop by coordinates/dimensions or gravity-based smart crop.
+- [x] **Compress / optimize** — quality, format-specific tuning, and target file-size optimization.
+- [x] **Convert formats** — JPEG, PNG, WebP, AVIF, GIF, BMP, TIFF.
 - [ ] **Rotate & flip** — arbitrary rotation, horizontal/vertical flip, auto-orient from EXIF.
 - [ ] **Blur & sharpen** — gaussian blur, unsharp mask, motion blur.
 - [ ] **Adjustments** — brightness, contrast, saturation, hue, exposure, gamma.
