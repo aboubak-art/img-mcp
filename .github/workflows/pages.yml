@@ -35,7 +35,14 @@ jobs:
         run: npm ci
 
       - name: Build website and docs
-        run: npm run website:build
+        run: |
+          rm -rf website
+          npm run website:build
+
+      - name: Verify build output
+        run: |
+          test -f website/index.html
+          test -f website/docs/index.html
 
       - name: Set up GitHub Pages
         # Pages must be enabled manually in repo Settings first:

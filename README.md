@@ -12,9 +12,10 @@ An open-source [Model Context Protocol (MCP)](https://modelcontextprotocol.io) s
 
 - **Text-to-image generation** via MCP tools
 - **Image-to-image / reference-image generation** by passing base64 images or data URIs
-- **Transparent background generation** using `@imgly/background-removal-node`
+- **Transparent background generation**
+- **Local image resizing** — scale, crop-fit, and convert formats without an API key
+- **Local image format conversion** — JPEG, PNG, WebP, AVIF, GIF
 - **Google Nano Banana** support (`gemini-3.1-flash-image`, `gemini-3.1-flash-lite-image`, `gemini-3-pro-image`, etc.)
-- **Local image resizing** — scale, crop, and convert formats without an API key
 - **User-provided API key** — you bring your own Google API key
 - **Zero-install usage** with `npx img-mcp`
 - **Multiple aspect ratios and image sizes**

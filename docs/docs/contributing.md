@@ -46,15 +46,20 @@ npx @modelcontextprotocol/inspector dist/index.js
 
 ## Working on the website
 
-The website source lives in `website/` and the documentation source lives in `docs/`.
+The entire site is built with VitePress.
 
-To preview the documentation site locally:
+- Documentation Markdown lives in `docs/docs/`.
+- The custom landing page is `docs/.vitepress/theme/LandingPage.vue`.
+- Shared styles and VitePress theme overrides are in `docs/.vitepress/theme/`.
+- Static assets (logos, illustrations, favicon) go in `docs/public/assets/`.
+
+To preview the site locally:
 
 ```bash
 npm run docs:dev
 ```
 
-To build the full website (landing page + docs) for production:
+To build the full site (landing page + docs) for production:
 
 ```bash
 npm run website:build

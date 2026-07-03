@@ -5,7 +5,7 @@ Get img-mcp running locally and connected to your favorite MCP host.
 ## Prerequisites
 
 - [Node.js](https://nodejs.org) 18 or later
-- A Google API key with access to Gemini image-generation models
+- A Google API key only if you want AI image generation (local manipulation works without one)
 
 ## Get a Google API key
 
@@ -109,5 +109,12 @@ If everything is configured correctly, the agent will call the `generate_image` 
 
 ## Next steps
 
-- [Configure environment variables](/configuration)
-- [Read the `generate_image` tool reference](/tools/generate-image)
+- [Configure environment variables](/docs/configuration.html)
+- [Read the `generate_image` tool reference](/docs/tools/generate-image.html)
+- [Read the `resize_image` tool reference](/docs/tools/resize.html)
+- [Read the `convert_image` tool reference](/docs/tools/convert.html)
+- [View the project roadmap](/docs/roadmap.html)
+
+## Local manipulation without an API key
+
+`resize_image` and `convert_image` run entirely on your machine using `sharp`. You only need a `GOOGLE_API_KEY` for `generate_image` and other AI-powered features.

@@ -1,12 +1,12 @@
 import { defineConfig } from "vitepress";
 
 export default defineConfig({
-  title: "img-mcp Docs",
+  title: "img-mcp",
   titleTemplate: ":title | img-mcp",
   description:
-    "Documentation for img-mcp, the open-source MCP server for AI image generation. Learn how to install, configure, and use the generate_image tool.",
-  base: "/img-mcp/docs/",
-  outDir: "../website/docs",
+    "img-mcp is an open-source MCP server for AI agents. Resize, crop, convert, compress, remove backgrounds, and generate images — all from Node.js.",
+  base: "/img-mcp/",
+  outDir: "../website",
   cleanUrls: false,
   lastUpdated: true,
 
@@ -20,41 +20,49 @@ export default defineConfig({
     ["meta", { name: "twitter:image", content: "https://aboubak-art.github.io/img-mcp/assets/og-image.jpg" }],
   ],
 
+  transformHead({ pageData }) {
+    const path = pageData.relativePath
+      .replace(/\.md$/, ".html")
+      .replace(/index\.html$/, "");
+    const canonical = `https://aboubak-art.github.io/img-mcp/${path}`;
+    return [["link", { rel: "canonical", href: canonical }]];
+  },
+
   themeConfig: {
-    logo: "https://aboubak-art.github.io/img-mcp/assets/logo.svg",
+    logo: "/assets/logo.svg",
     siteTitle: "img-mcp",
     nav: [
-      { text: "Home", link: "https://aboubak-art.github.io/img-mcp/" },
-      { text: "Docs", link: "/" },
-      { text: "Roadmap", link: "/roadmap" },
+      { text: "Home", link: "/" },
+      { text: "Docs", link: "/docs/index.html" },
+      { text: "Roadmap", link: "/docs/roadmap.html" },
       { text: "GitHub", link: "https://github.com/aboubak-art/img-mcp" },
     ],
     sidebar: [
       {
         text: "Getting Started",
         items: [
-          { text: "Introduction", link: "/" },
-          { text: "Installation", link: "/getting-started" },
-          { text: "Configuration", link: "/configuration" },
+          { text: "Introduction", link: "/docs/index.html" },
+          { text: "Installation", link: "/docs/getting-started.html" },
+          { text: "Configuration", link: "/docs/configuration.html" },
         ],
       },
       {
         text: "Tools",
         items: [
-          { text: "generate_image", link: "/tools/generate-image" },
-          { text: "resize_image", link: "/tools/resize" },
-          { text: "convert_image", link: "/tools/convert" },
+          { text: "generate_image", link: "/docs/tools/generate-image.html" },
+          { text: "resize_image", link: "/docs/tools/resize.html" },
+          { text: "convert_image", link: "/docs/tools/convert.html" },
         ],
       },
       {
         text: "Providers",
-        items: [{ text: "Google Nano Banana", link: "/providers/google-nano-banana" }],
+        items: [{ text: "Google Nano Banana", link: "/docs/providers/google-nano-banana.html" }],
       },
       {
         text: "Project",
         items: [
-          { text: "Roadmap", link: "/roadmap" },
-          { text: "Contributing", link: "/contributing" },
+          { text: "Roadmap", link: "/docs/roadmap.html" },
+          { text: "Contributing", link: "/docs/contributing.html" },
         ],
       },
     ],
@@ -75,6 +83,12 @@ export default defineConfig({
   },
 
   sitemap: {
-    hostname: "https://aboubak-art.github.io/img-mcp/docs/",
+    hostname: "https://aboubak-art.github.io/img-mcp/",
+  },
+
+  vite: {
+    build: {
+      emptyOutDir: true,
+    },
   },
 });

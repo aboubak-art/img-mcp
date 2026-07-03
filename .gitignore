@@ -9,6 +9,7 @@ dist/
 *.tgz
 
 # VitePress build output and cache
+website/
 website/docs/
 docs/.vitepress/cache/
 docs/.vitepress/dist/
