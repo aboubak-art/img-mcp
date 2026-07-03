@@ -12,3 +12,6 @@ dist/
 website/docs/
 docs/.vitepress/cache/
 docs/.vitepress/dist/
+
+.mcp.json
+dummy/

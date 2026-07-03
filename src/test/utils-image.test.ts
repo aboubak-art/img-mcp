@@ -6,6 +6,7 @@ import { join } from "node:path";
 import {
   appendTransparentBackgroundPrompt,
   ensurePngExtension,
+  parseImageInput,
   saveImagesToDisk,
   TRANSPARENT_BACKGROUND_COLOR,
 } from "../utils/image.js";
@@ -20,6 +21,26 @@ async function withTempDir<T>(callback: (dir: string) => Promise<T>): Promise<T>
 }
 
 describe("utils/image", () => {
+  describe("parseImageInput", () => {
+    it("parses a base64 data URI into data and mime type", () => {
+      const parsed = parseImageInput("data:image/png;base64,abc123");
+      assert.strictEqual(parsed.mimeType, "image/png");
+      assert.strictEqual(parsed.data, "abc123");
+    });
+
+    it("defaults to image/png for plain base64 strings", () => {
+      const parsed = parseImageInput("abc123");
+      assert.strictEqual(parsed.mimeType, "image/png");
+      assert.strictEqual(parsed.data, "abc123");
+    });
+
+    it("preserves the mime type from a JPEG data URI", () => {
+      const parsed = parseImageInput("data:image/jpeg;base64,/9j/4AAQ");
+      assert.strictEqual(parsed.mimeType, "image/jpeg");
+      assert.strictEqual(parsed.data, "/9j/4AAQ");
+    });
+  });
+
   describe("saveImagesToDisk", () => {
     it("saves a single image to the exact output path", async () => {
       await withTempDir(async (dir) => {

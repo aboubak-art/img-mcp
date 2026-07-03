@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerGenerateImageTool } from "./tools/generate-image.js";
+import { registerResizeImageTool } from "./tools/resize.js";
 
 export function createServer(): McpServer {
   const server = new McpServer({
@@ -8,6 +9,7 @@ export function createServer(): McpServer {
   });
 
   registerGenerateImageTool(server);
+  registerResizeImageTool(server);
 
   return server;
 }

@@ -6,21 +6,9 @@ import type {
   ImageGenerationOptions,
 } from "../types.js";
 import { loadConfig } from "../config.js";
+import { parseImageInput } from "../utils/image.js";
 
-interface ParsedImageInput {
-  data: string;
-  mimeType: string;
-}
-
-export function parseImageInput(input: string): ParsedImageInput {
-  const dataUriMatch = /^data:([a-zA-Z0-9]+\/[a-zA-Z0-9+.-]+);base64,(.*)$/.exec(
-    input
-  );
-  if (dataUriMatch) {
-    return { data: dataUriMatch[2] as string, mimeType: dataUriMatch[1] as string };
-  }
-  return { data: input, mimeType: "image/png" };
-}
+export { parseImageInput } from "../utils/image.js";
 
 const SUPPORTED_ASPECT_RATIOS = [
   "1:1",

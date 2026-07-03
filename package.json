@@ -41,6 +41,7 @@
   "homepage": "https://aboubak-art.github.io/img-mcp/",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.8.0",
+    "sharp": "^0.32.6",
     "zod": "^3.25.0"
   },
   "peerDependencies": {
