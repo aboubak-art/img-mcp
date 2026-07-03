@@ -10,15 +10,15 @@ img-mcp is becoming a general-purpose image manipulation MCP server. Generation 
 - [x] **Transparent backgrounds** — remove backgrounds via `@imgly/background-removal-node`.
 - [x] **Zero-install usage** — run with `npx -y img-mcp`.
 - [x] **Bring-your-own-key** — your Google API key stays in your environment.
-- [x] **Resize** — scale by width, height, percentage, or fit mode (`cover`, `contain`, `fill`, `inside`, `outside`).
-- [x] **Convert formats** — JPEG, PNG, WebP, AVIF, GIF.
+- [x] **Resize** — scale by width, height, percentage, or fit mode (`cover`, `contain`, `fill`).
+- [x] **Crop** — crop by coordinates/dimensions or gravity-based smart crop.
+- [x] **Compress / optimize** — quality, format-specific tuning, and target file-size optimization.
+- [x] **Convert formats** — JPEG, PNG, WebP, AVIF, GIF, BMP, TIFF.
 
 ## Planned — Core image manipulation
 
 The priority is robust, dependency-light Node.js operations that work without an API key.
 
-- [ ] **Crop** — crop by coordinates/dimensions or gravity-based smart crop.
-- [ ] **Compress / optimize** — quality, format-specific tuning, and target file-size optimization.
 - [ ] **Rotate & flip** — arbitrary rotation, horizontal/vertical flip, auto-orient from EXIF.
 - [ ] **Blur & sharpen** — gaussian blur, unsharp mask, motion blur.
 - [ ] **Adjustments** — brightness, contrast, saturation, hue, exposure, gamma.
