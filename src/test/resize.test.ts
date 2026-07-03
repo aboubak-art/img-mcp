@@ -1,10 +1,10 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import sharp from "sharp";
-import { resizeImage, saveImageToDisk } from "../utils/image.js";
+import { loadImageInput, resizeImage, saveImageToDisk } from "../utils/image.js";
 
 async function createTestImage(width: number, height: number): Promise<string> {
   const buffer = await sharp({
@@ -18,6 +18,22 @@ async function createTestImage(width: number, height: number): Promise<string> {
     .png()
     .toBuffer();
   return buffer.toString("base64");
+}
+
+async function createTestImageFile(dir: string, width: number, height: number): Promise<string> {
+  const filePath = join(dir, "source.png");
+  const buffer = await sharp({
+    create: {
+      width,
+      height,
+      channels: 3,
+      background: { r: 255, g: 0, b: 0 },
+    },
+  })
+    .png()
+    .toBuffer();
+  await writeFile(filePath, buffer);
+  return filePath;
 }
 
 async function withTempDir<T>(callback: (dir: string) => Promise<T>): Promise<T> {
@@ -91,6 +107,48 @@ describe("resizeImage", () => {
       await saveImageToDisk(resized, outputPath);
       const contents = await readFile(outputPath);
       assert.ok(contents.length > 0);
+    });
+  });
+});
+
+describe("loadImageInput", () => {
+  it("loads an image from a file path", async () => {
+    await withTempDir(async (dir) => {
+      const filePath = await createTestImageFile(dir, 20, 10);
+      const parsed = await loadImageInput(filePath);
+      assert.strictEqual(parsed.mimeType, "image/png");
+      const buffer = Buffer.from(parsed.data, "base64");
+      const metadata = await sharp(buffer).metadata();
+      assert.strictEqual(metadata.width, 20);
+      assert.strictEqual(metadata.height, 10);
+    });
+  });
+
+  it("loads an image from a data URI", async () => {
+    const image = await createTestImage(10, 10);
+    const dataUri = `data:image/png;base64,${image}`;
+    const parsed = await loadImageInput(dataUri);
+    assert.strictEqual(parsed.mimeType, "image/png");
+    assert.strictEqual(parsed.data, image);
+  });
+
+  it("falls back to raw base64 when input is not a file or URL", async () => {
+    const image = await createTestImage(10, 10);
+    const parsed = await loadImageInput(image);
+    assert.strictEqual(parsed.mimeType, "image/png");
+    assert.strictEqual(parsed.data, image);
+  });
+});
+
+describe("resizeImage from file path", () => {
+  it("resizes an image loaded from a file path", async () => {
+    await withTempDir(async (dir) => {
+      const filePath = await createTestImageFile(dir, 200, 100);
+      const resized = await resizeImage({ image: filePath, width: 100 });
+      const dimensions = await getDimensions(resized.data);
+      assert.strictEqual(dimensions.width, 100);
+      assert.strictEqual(dimensions.height, 50);
+      assert.strictEqual(resized.mimeType, "image/png");
     });
   });
 });

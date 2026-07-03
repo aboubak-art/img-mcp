@@ -1,4 +1,4 @@
-import { writeFile } from "node:fs/promises";
+import { readFile, stat, writeFile } from "node:fs/promises";
 import { dirname, extname, basename, join } from "node:path";
 import sharp from "sharp";
 import type { GeneratedImage } from "../types.js";
@@ -20,6 +20,78 @@ export function parseImageInput(input: string): ParsedImageInput {
   return { data: input, mimeType: "image/png" };
 }
 
+function mimeTypeFromExtension(pathOrUrl: string): string {
+  const ext = extname(new URL(pathOrUrl, "file:").pathname).toLowerCase();
+  const map: Record<string, string> = {
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".png": "image/png",
+    ".webp": "image/webp",
+    ".avif": "image/avif",
+    ".gif": "image/gif",
+    ".bmp": "image/bmp",
+    ".tiff": "image/tiff",
+    ".tif": "image/tiff",
+  };
+  return map[ext] ?? "image/png";
+}
+
+function looksLikeUrl(input: string): boolean {
+  return /^https?:\/\//i.test(input);
+}
+
+async function loadImageFromUrl(url: string): Promise<ParsedImageInput> {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch image from ${url}: ${response.status} ${response.statusText}`);
+  }
+  const arrayBuffer = await response.arrayBuffer();
+  const data = Buffer.from(arrayBuffer).toString("base64");
+  const mimeType = response.headers.get("content-type")?.split(";")[0].trim() ?? mimeTypeFromExtension(url);
+  return { data, mimeType };
+}
+
+async function loadImageFromFile(filePath: string): Promise<ParsedImageInput> {
+  const buffer = await readFile(filePath);
+  return {
+    data: buffer.toString("base64"),
+    mimeType: mimeTypeFromExtension(filePath),
+  };
+}
+
+async function tryLoadImageFromFile(input: string): Promise<ParsedImageInput | null> {
+  try {
+    const stats = await stat(input);
+    if (stats.isFile()) {
+      return await loadImageFromFile(input);
+    }
+  } catch (error) {
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+      return null;
+    }
+    throw error;
+  }
+  return null;
+}
+
+export async function loadImageInput(input: string): Promise<ParsedImageInput> {
+  const dataUriMatch = /^data:([a-zA-Z0-9]+\/[a-zA-Z0-9+.-]+);base64,(.*)$/.exec(input);
+  if (dataUriMatch) {
+    return { data: dataUriMatch[2] as string, mimeType: dataUriMatch[1] as string };
+  }
+
+  if (looksLikeUrl(input)) {
+    return loadImageFromUrl(input);
+  }
+
+  const fileResult = await tryLoadImageFromFile(input);
+  if (fileResult) {
+    return fileResult;
+  }
+
+  return { data: input, mimeType: "image/png" };
+}
+
 export interface ResizeOptions {
   image: string;
   width?: number;
@@ -31,7 +103,7 @@ export interface ResizeOptions {
 }
 
 export async function resizeImage(options: ResizeOptions): Promise<GeneratedImage> {
-  const { data, mimeType } = parseImageInput(options.image);
+  const { data, mimeType } = await loadImageInput(options.image);
   const inputBuffer = Buffer.from(data, "base64");
 
   let pipeline = sharp(inputBuffer);

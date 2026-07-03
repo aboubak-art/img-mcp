@@ -6,7 +6,7 @@ Resize an image locally using the [sharp](https://sharp.pixelplumbing.com/) libr
 
 | Argument | Type | Required | Default | Description |
 |----------|------|----------|---------|-------------|
-| `image` | `string` | Yes | — | Input image as a base64 string or data URI (`data:image/png;base64,...`). |
+| `image` | `string` | Yes | — | Input image as a base64 string, data URI (`data:image/png;base64,...`), local file path, or URL. |
 | `width` | `number` | No | — | Target width in pixels. |
 | `height` | `number` | No | — | Target height in pixels. |
 | `scale` | `number` | No | — | Scale factor, for example `0.5` for 50%. |
@@ -34,7 +34,7 @@ You must provide at least one of `width`, `height`, or `scale`.
 
 ## Examples
 
-### Scale by width
+### Scale by width from a data URI
 
 ```json
 {
@@ -43,22 +43,22 @@ You must provide at least one of `width`, `height`, or `scale`.
 }
 ```
 
-### Exact crop with cover fit
+### Resize an image from a local file path
 
 ```json
 {
-  "image": "data:image/png;base64,iVBORw0KGgo...",
+  "image": "/path/to/photo.jpg",
   "width": 800,
   "height": 600,
   "fit": "cover"
 }
 ```
 
-### Scale by percentage and convert to WebP
+### Resize an image from a URL
 
 ```json
 {
-  "image": "data:image/png;base64,iVBORw0KGgo...",
+  "image": "https://example.com/photo.png",
   "scale": 0.5,
   "format": "webp",
   "quality": 85,

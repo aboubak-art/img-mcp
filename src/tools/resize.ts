@@ -31,7 +31,7 @@ export function registerResizeImageTool(server: McpServer): void {
     "resize_image",
     {
       description:
-        "Resize an image by exact width, height, percentage scale, or fit mode. Supports output to disk or base64. Optionally convert format and adjust quality.",
+        "Resize an image by exact width, height, percentage scale, or fit mode. Accepts the image as a base64 string, data URI, file path, or URL. Supports output to disk or base64. Optionally convert format and adjust quality.",
       inputSchema: ResizeArgsBaseSchema.shape,
     },
     async (args: ResizeArgs) => {
