@@ -1,6 +1,6 @@
 {
   "name": "img-mcp",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "An open-source MCP server for AI image generation. Supports Google's Nano Banana models via the Gemini API.",
   "type": "module",
   "main": "dist/index.js",
