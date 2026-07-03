@@ -41,8 +41,8 @@
   "homepage": "https://aboubak-art.github.io/img-mcp/",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.8.0",
-    "sharp": "^0.32.6",
-    "zod": "^3.25.0"
+    "sharp": "^0.35.3",
+    "zod": "^4.4.3"
   },
   "peerDependencies": {
     "@imgly/background-removal-node": "^1.4.5"
@@ -53,12 +53,12 @@
     }
   },
   "devDependencies": {
-    "@imgly/background-removal-node": "^1.4.5",
+    "@imgly/background-removal-node": "^1.4.3",
     "@types/node": "^22.15.0",
     "gsap": "^3.15.0",
-    "tsx": "^4.19.0",
-    "typescript": "^5.8.0",
-    "vitepress": "^1.6.4"
+    "tsx": "^4.22.5",
+    "typescript": "^6.0.3",
+    "vitepress": "^2.0.0-alpha.17"
   },
   "engines": {
     "node": ">=18.0.0"
