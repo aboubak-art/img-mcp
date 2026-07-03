@@ -10,7 +10,7 @@ The main tool exposed by img-mcp. It generates images from text prompts and can 
 | `model` | `string` | No | `gemini-3.1-flash-image` | Nano Banana model ID. Can also be set with `GOOGLE_IMAGE_MODEL`. |
 | `n` | `number` | No | `1` | Number of images to generate, from 1 to 4. |
 | `aspect_ratio` | `string` | No | `1:1` | Output aspect ratio. |
-| `image_size` | `string` | No | `1K` | Output resolution. |
+| `image_size` | `string` | No | `1K` | Output resolution. Larger sizes may require a model such as `gemini-3-pro-image`. |
 | `output_path` | `string` | No | — | If provided, saves the first image to disk and returns the file path. |
 | `images` | `string` or `string[]` | No | — | One or more reference images as base64 strings or data URIs. |
 | `transparent_background` | `boolean` | No | `false` | Generate a PNG with a transparent background. |
@@ -21,10 +21,14 @@ The main tool exposed by img-mcp. It generates images from text prompts and can 
 
 ### Supported image sizes
 
-- `512px (05.K)`
+- `512`
 - `1K`
 - `2K`
 - `4K`
+
+::: tip Model support for larger sizes
+`2K` and `4K` outputs require a Nano Banana model that supports high-resolution generation, such as `gemini-3-pro-image`. The default `gemini-3.1-flash-image` model typically supports `512` and `1K`.
+:::
 
 ## Output behavior
 
