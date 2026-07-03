@@ -1,6 +1,6 @@
 import { readFile, stat, writeFile } from "node:fs/promises";
 import { dirname, extname, basename, join } from "node:path";
-import sharp from "sharp";
+import sharp, { type ResizeOptions as SharpResizeOptions, type Sharp } from "sharp";
 import type { GeneratedImage } from "../types.js";
 
 export const TRANSPARENT_BACKGROUND_COLOR = "#00FF00";
@@ -109,7 +109,7 @@ export interface ConvertOptions {
 }
 
 async function applyOutputFormat(
-  pipeline: sharp.Sharp,
+  pipeline: Sharp,
   outputFormat: "jpeg" | "png" | "webp" | "avif" | "gif",
   quality?: number
 ): Promise<GeneratedImage> {
@@ -172,7 +172,7 @@ export async function resizeImage(options: ResizeOptions): Promise<GeneratedImag
   }
 
   if (targetWidth !== undefined || targetHeight !== undefined) {
-    const resizeOptions: sharp.ResizeOptions = {
+    const resizeOptions: SharpResizeOptions = {
       width: targetWidth,
       height: targetHeight,
     };
