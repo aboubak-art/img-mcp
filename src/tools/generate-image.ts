@@ -38,7 +38,7 @@ export function registerGenerateImageTool(server: McpServer): void {
     "generate_image",
     {
       description:
-        "Generate images from a text prompt using Google's Nano Banana models via the Gemini API. Optionally provide reference images as base64 strings, data URIs, file paths, or URLs to guide generation.",
+        "Generate (only jpeg) images from a text prompt using Google's Nano Banana models via the Gemini API. Optionally provide reference images as base64 strings, data URIs, file paths, or URLs to guide generation.",
       inputSchema: GenerateImageArgsSchema.shape,
     },
     async (args) => {

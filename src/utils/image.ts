@@ -378,7 +378,7 @@ export async function removeImageBackground(
     ({ removeBackground } = await import("@imgly/background-removal-node"));
   } catch (error) {
     throw new Error(
-      "The remove_background tool requires the optional peer dependency @imgly/background-removal-node. Install it with: npm install @imgly/background-removal-node"
+      "The remove_background tool requires the optional peer dependency @imgly/background-removal-node. Please install it with: npm install @imgly/background-removal-node"
     );
   }
 

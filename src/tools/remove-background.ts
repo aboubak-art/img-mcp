@@ -22,23 +22,40 @@ export function registerRemoveBackgroundTool(server: McpServer): void {
       inputSchema: RemoveBackgroundArgsSchema.shape,
     },
     async (args: RemoveBackgroundArgs) => {
-      const removed = await removeBackgroundFromImage(args.image);
+      try {
+        const removed = await removeBackgroundFromImage(args.image);
 
-      if (args.output_path) {
-        const outputPath = ensurePngExtension(args.output_path);
-        await saveImageToDisk(removed, outputPath);
+        if (args.output_path) {
+          const outputPath = ensurePngExtension(args.output_path);
+          await saveImageToDisk(removed, outputPath);
+          return {
+            content: [
+              { type: "text", text: `Saved the image with background removed to ${outputPath}` },
+            ],
+          };
+        }
+
         return {
           content: [
-            { type: "text", text: `Saved the image with background removed to ${outputPath}` },
+            { type: "image", data: removed.data, mimeType: removed.mimeType },
           ],
         };
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : String(error);
+        if (message.includes("@imgly/background-removal-node")) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: "Background removal is not available because the optional dependency `@imgly/background-removal-node` is not installed. Please install it with:\n\n  npm install @imgly/background-removal-node\n\nIf you are using `npx`, install the dependency alongside img-mcp in your project.",
+              },
+            ],
+            isError: true,
+          };
+        }
+        throw error;
       }
-
-      return {
-        content: [
-          { type: "image", data: removed.data, mimeType: removed.mimeType },
-        ],
-      };
     }
   );
 }
