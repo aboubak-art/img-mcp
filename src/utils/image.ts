@@ -66,7 +66,11 @@ async function tryLoadImageFromFile(input: string): Promise<ParsedImageInput | n
       return await loadImageFromFile(input);
     }
   } catch (error) {
-    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+    if (
+      error instanceof Error &&
+      "code" in error &&
+      (error.code === "ENOENT" || error.code === "ENAMETOOLONG")
+    ) {
       return null;
     }
     throw error;
@@ -245,6 +249,85 @@ export async function cropImage(options: CropOptions): Promise<GeneratedImage> {
   }
 
   const outputFormat = options.format ?? extensionFromMimeType(mimeType);
+  return applyOutputFormat(pipeline, outputFormat, options.quality);
+}
+
+export interface CompressOptions {
+  image: string;
+  quality?: number;
+  format?: "jpeg" | "png" | "webp" | "avif" | "gif";
+  target_size?: number;
+}
+
+type LossyFormat = "jpeg" | "webp" | "avif";
+
+async function encodeLossy(pipeline: Sharp, format: LossyFormat, quality: number): Promise<Buffer> {
+  switch (format) {
+    case "jpeg":
+      return pipeline.jpeg({ quality, mozjpeg: true }).toBuffer();
+    case "webp":
+      return pipeline.webp({ quality }).toBuffer();
+    case "avif":
+      return pipeline.avif({ quality }).toBuffer();
+  }
+}
+
+function lossyFormatFromMimeType(mimeType: string): LossyFormat {
+  if (mimeType === "image/jpeg") return "jpeg";
+  if (mimeType === "image/avif") return "avif";
+  return "webp";
+}
+
+async function compressToTargetSize(
+  pipeline: Sharp,
+  format: LossyFormat,
+  targetSize: number
+): Promise<GeneratedImage> {
+  let low = 1;
+  let high = 100;
+  let bestBuffer: Buffer | null = null;
+
+  for (let i = 0; i < 10 && low <= high; i++) {
+    const mid = Math.floor((low + high) / 2);
+    const buffer = await encodeLossy(pipeline.clone(), format, mid);
+
+    if (buffer.length <= targetSize) {
+      bestBuffer = buffer;
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+
+  if (!bestBuffer) {
+    bestBuffer = await encodeLossy(pipeline, format, 1);
+  }
+
+  const mimeTypeMap: Record<LossyFormat, string> = {
+    jpeg: "image/jpeg",
+    webp: "image/webp",
+    avif: "image/avif",
+  };
+
+  return { data: bestBuffer.toString("base64"), mimeType: mimeTypeMap[format] };
+}
+
+export async function compressImage(options: CompressOptions): Promise<GeneratedImage> {
+  const { data, mimeType } = await loadImageInput(options.image);
+  const inputBuffer = Buffer.from(data, "base64");
+  const pipeline = sharp(inputBuffer);
+
+  const outputFormat = options.format ?? extensionFromMimeType(mimeType);
+
+  if (options.target_size !== undefined) {
+    if (outputFormat !== "jpeg" && outputFormat !== "webp" && outputFormat !== "avif") {
+      throw new Error(
+        `target_size is only supported for lossy formats (jpeg, webp, avif). Got: ${outputFormat}`
+      );
+    }
+    return compressToTargetSize(pipeline, outputFormat, options.target_size);
+  }
+
   return applyOutputFormat(pipeline, outputFormat, options.quality);
 }
 

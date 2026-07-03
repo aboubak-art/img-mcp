@@ -1,4 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { registerCompressImageTool } from "./tools/compress.js";
 import { registerConvertImageTool } from "./tools/convert.js";
 import { registerCropImageTool } from "./tools/crop.js";
 import { registerGenerateImageTool } from "./tools/generate-image.js";
@@ -14,6 +15,7 @@ export function createServer(): McpServer {
   registerResizeImageTool(server);
   registerConvertImageTool(server);
   registerCropImageTool(server);
+  registerCompressImageTool(server);
 
   return server;
 }
