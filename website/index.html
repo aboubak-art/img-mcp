@@ -3,25 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>img-mcp — AI Image Generation for MCP Agents</title>
-  <meta name="description" content="img-mcp is an open-source MCP server that gives AI agents the power to generate images. Text-to-image, reference images, transparent backgrounds, and more." />
-  <meta name="keywords" content="MCP, Model Context Protocol, image generation, AI images, Nano Banana, Gemini, open source, img-mcp" />
+  <title>img-mcp — Image Manipulation & Generation MCP Server</title>
+  <meta name="description" content="img-mcp is an open-source MCP server for AI agents. Resize, crop, convert, compress, remove backgrounds, and generate images — all from Node.js." />
+  <meta name="keywords" content="MCP, Model Context Protocol, image manipulation, image generation, resize, crop, convert, compress, AI images, open source, img-mcp" />
   <meta name="author" content="Aboubakar Sidik Faha" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://aboubak-art.github.io/img-mcp/" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="img-mcp — AI Image Generation for MCP Agents" />
-  <meta property="og:description" content="Open-source MCP server for AI image generation. Connect your agents to Google's Nano Banana models in minutes." />
+  <meta property="og:title" content="img-mcp — Image Manipulation & Generation MCP Server" />
+  <meta property="og:description" content="Open-source MCP server for AI agents. Resize, crop, convert, compress, remove backgrounds, and generate images from Node.js." />
   <meta property="og:url" content="https://aboubak-art.github.io/img-mcp/" />
   <meta property="og:image" content="https://aboubak-art.github.io/img-mcp/assets/og-image.jpg" />
   <meta property="og:site_name" content="img-mcp" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="img-mcp — AI Image Generation for MCP Agents" />
-  <meta name="twitter:description" content="Open-source MCP server for AI image generation. Connect your agents to Google's Nano Banana models in minutes." />
+  <meta name="twitter:title" content="img-mcp — Image Manipulation & Generation MCP Server" />
+  <meta name="twitter:description" content="Open-source MCP server for AI agents. Resize, crop, convert, compress, remove backgrounds, and generate images from Node.js." />
   <meta name="twitter:image" content="https://aboubak-art.github.io/img-mcp/assets/og-image.jpg" />
 
   <!-- Favicon -->
@@ -51,13 +51,16 @@
     "license": "https://github.com/aboubak-art/img-mcp/blob/main/LICENSE",
     "codeRepository": "https://github.com/aboubak-art/img-mcp",
     "downloadUrl": "https://www.npmjs.com/package/img-mcp",
-    "softwareVersion": "1.1.0",
-    "description": "An open-source MCP server that lets AI agents generate images using Google's Nano Banana models.",
+    "softwareVersion": "1.1.1",
+    "description": "An open-source MCP server for AI image generation and local Node.js image manipulation.",
     "featureList": [
       "Text-to-image generation",
       "Image-to-image generation with reference images",
       "Transparent background generation",
-      "Multiple aspect ratios and image sizes",
+      "Resize, crop, rotate, and flip",
+      "Format conversion and compression",
+      "Batch image operations",
+      "EXIF metadata handling",
       "Zero-install usage with npx"
     ]
   }
@@ -74,7 +77,7 @@
         "name": "What is img-mcp?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "img-mcp is an open-source Model Context Protocol (MCP) server that lets AI agents generate images using Google's Nano Banana image generation models."
+          "text": "img-mcp is an open-source Model Context Protocol (MCP) server that lets AI agents manipulate and generate images. Core operations run locally via Node.js, while AI generation uses Google's Nano Banana models."
         }
       },
       {
@@ -82,7 +85,7 @@
         "name": "How do I install img-mcp?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "You can run img-mcp without installing it via npx: npx -y img-mcp. You only need a Google API key from Google AI Studio."
+          "text": "You can run img-mcp without installing it via npx: npx -y img-mcp. AI generation requires a Google API key from Google AI Studio; local manipulation does not."
         }
       },
       {
@@ -127,10 +130,10 @@
       <div class="hero-bg" aria-hidden="true"></div>
       <div class="container">
         <div class="hero-content">
-          <div class="badge-pill">Open-source MCP server</div>
-          <h1 id="hero-title">Give your AI agents the power to <span class="gradient-text">generate images</span></h1>
+          <div class="badge-pill">Open-source image manipulation MCP server</div>
+          <h1 id="hero-title">Give your agents a complete <span class="gradient-text">image toolkit</span></h1>
           <p class="hero-lead">
-            <strong>img-mcp</strong> connects any MCP host to Google's Nano Banana image models. Describe an image, and your agent creates it — no complex setup, no shared API keys.
+            <strong>img-mcp</strong> is an MCP server that lets agents resize, crop, convert, compress, and edit images locally with Node.js — plus generate images when you want AI. No Docker, no shared keys, no friction.
           </p>
           <div class="hero-cta">
             <a class="button button-primary" href="#install">Get started in 60 seconds</a>
@@ -139,7 +142,7 @@
           <div class="hero-meta">
             <span><span class="dot" aria-hidden="true"></span> MIT licensed</span>
             <span><span class="dot" aria-hidden="true"></span> Zero install with npx</span>
-            <span><span class="dot" aria-hidden="true"></span> Bring your own key</span>
+            <span><span class="dot" aria-hidden="true"></span> Node.js powered</span>
           </div>
         </div>
         <div class="hero-visual">
@@ -166,10 +169,38 @@
       <div class="container">
         <div class="section-header">
           <span class="section-label">Features</span>
-          <h2 id="features-title">Everything you need to generate images from prompts</h2>
-          <p>From simple text-to-image to advanced reference-based generation and transparent backgrounds.</p>
+          <h2 id="features-title">A complete image toolkit for agents</h2>
+          <p>From fast local edits to AI-powered generation — one MCP server, zero setup.</p>
         </div>
         <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M21 15h-6M15 21v-6"></path></svg>
+            </div>
+            <h3>Resize & crop</h3>
+            <p>Scale by width, height, percentage, or fit mode. Crop by coordinates, dimensions, or gravity with a single tool call.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+            </div>
+            <h3>Convert & compress</h3>
+            <p>Switch between JPEG, PNG, WebP, AVIF, GIF, and more. Optimize quality and file size for any channel.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </div>
+            <h3>Batch operations</h3>
+            <p>Apply the same transform to multiple images in one call. Perfect for thumbnails, exports, and asset pipelines.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"></line><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"></line><line x1="14.83" y1="9.17" x2="18.36" y2="5.64"></line><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line></svg>
+            </div>
+            <h3>Metadata & EXIF</h3>
+            <p>Read, write, and strip image metadata. Keep or remove EXIF, IPTC, and XMP data on demand.</p>
+          </article>
           <article class="feature-card">
             <div class="feature-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"></path></svg>
@@ -181,36 +212,8 @@
             <div class="feature-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
             </div>
-            <h3>Image-to-image</h3>
-            <p>Pass reference images as base64 or data URIs to guide style, composition, and subject in new generations.</p>
-          </article>
-          <article class="feature-card">
-            <div class="feature-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
-            </div>
-            <h3>Transparent backgrounds</h3>
-            <p>Generate assets with clean transparent backgrounds, perfect for logos, product shots, and overlays.</p>
-          </article>
-          <article class="feature-card">
-            <div class="feature-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-            </div>
-            <h3>Flexible sizes & ratios</h3>
-            <p>Choose from 1:1, 16:9, 9:16, 4:3, 21:9, and more. Render from 512px up to 4K.</p>
-          </article>
-          <article class="feature-card">
-            <div class="feature-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
-            </div>
-            <h3>Bring your own key</h3>
-            <p>Your Google API key stays in your environment. No shared credentials, no proxy servers.</p>
-          </article>
-          <article class="feature-card">
-            <div class="feature-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-            </div>
-            <h3>Zero-install usage</h3>
-            <p>Run instantly with <code>npx -y img-mcp</code>. No global install required.</p>
+            <h3>Reference images & transparency</h3>
+            <p>Guide AI generation with base64 reference images and produce clean transparent assets for overlays.</p>
           </article>
         </div>
       </div>
@@ -220,24 +223,24 @@
       <div class="container">
         <div class="section-header">
           <span class="section-label">How it works</span>
-          <h2 id="steps-title">From prompt to pixels in three steps</h2>
-          <p>img-mcp translates your agent's requests into image generation calls and returns the results.</p>
+          <h2 id="steps-title">From command to edited image in three steps</h2>
+          <p>img-mcp translates your agent's instructions into local image operations or generation calls.</p>
         </div>
         <div class="steps-grid">
           <article class="step-card">
             <div class="step-number">1</div>
-            <h3>Set your API key</h3>
-            <p>Grab a free API key from <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio</a> and export it as <code>GOOGLE_API_KEY</code>.</p>
+            <h3>Set up in seconds</h3>
+            <p>No API key is needed for local manipulation. Add a <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google API key</a> only if you want AI image generation.</p>
           </article>
           <article class="step-card">
             <div class="step-number">2</div>
-            <h3>Add to your MCP host</h3>
-            <p>Paste the one-line MCP server config into Claude, Cursor, Windsurf, Kimi, or any compatible host.</p>
+            <h3>Add to Claude Code</h3>
+            <p>Run one command to register img-mcp as an MCP server in Claude Code. It also works in Cursor, Windsurf, Kimi, and other MCP hosts.</p>
           </article>
           <article class="step-card">
             <div class="step-number">3</div>
-            <h3>Ask for images</h3>
-            <p>Tell your agent what to create. img-mcp generates the image and returns it as base64 or saves it to disk.</p>
+            <h3>Edit or generate images</h3>
+            <p>Tell your agent what to do. img-mcp resizes, converts, crops, or generates images and returns the result.</p>
           </article>
         </div>
       </div>
@@ -247,8 +250,8 @@
       <div class="container">
         <div class="section-header">
           <span class="section-label">Quick start</span>
-          <h2 id="install-title">Install and run in seconds</h2>
-          <p>No configuration files, no Docker containers. Just your API key and one command.</p>
+          <h2 id="install-title">Add to Claude Code in one command</h2>
+          <p>No JSON files, no Docker, no manual config. Just run the CLI.</p>
         </div>
         <div class="terminal">
           <div class="terminal-header">
@@ -257,11 +260,11 @@
             <button class="terminal-copy" data-target="install-snippet" type="button">Copy</button>
           </div>
           <div class="terminal-body">
-            <pre id="install-snippet"><span class="comment"># 1. Set your Google API key</span>
-<span class="prompt">$</span> <span class="command">export</span> <span class="string">GOOGLE_API_KEY</span>=<span class="string">"your-google-api-key"</span>
+            <pre id="install-snippet"><span class="comment"># Local image manipulation only (no API key needed)</span>
+<span class="prompt">$</span> <span class="command">claude mcp add --transport stdio img-mcp -- npx -y img-mcp</span>
 
-<span class="comment"># 2. Run the MCP server with npx</span>
-<span class="prompt">$</span> <span class="command">npx -y img-mcp</span></pre>
+<span class="comment"># With AI image generation enabled</span>
+<span class="prompt">$</span> <span class="command">claude mcp add --env GOOGLE_API_KEY=YOUR_KEY --transport stdio img-mcp -- npx -y img-mcp</span></pre>
           </div>
         </div>
       </div>
@@ -272,7 +275,7 @@
         <div class="section-header">
           <span class="section-label">Roadmap</span>
           <h2 id="roadmap-title">Where img-mcp is headed</h2>
-          <p>Image generation is just the beginning. Here's what we're building next.</p>
+          <p>AI generation brought us here. The future is fast, local, non-AI image manipulation built on Node.js.</p>
         </div>
         <div class="roadmap-grid">
           <article class="roadmap-item">
@@ -299,36 +302,57 @@
           <article class="roadmap-item">
             <span class="roadmap-status planned">Planned</span>
             <div>
-              <h4>Upscale & super-resolution</h4>
-              <p>Increase resolution and sharpen details of generated images.</p>
+              <h4>Resize & convert</h4>
+              <p>Scale images and switch formats locally with no API call.</p>
             </div>
           </article>
           <article class="roadmap-item">
             <span class="roadmap-status planned">Planned</span>
             <div>
-              <h4>Inpainting & outpainting</h4>
-              <p>Edit parts of an image or extend the canvas beyond its edges.</p>
+              <h4>Crop, rotate & flip</h4>
+              <p>Coordinate-based cropping, rotation, mirroring, and EXIF auto-orient.</p>
             </div>
           </article>
           <article class="roadmap-item">
             <span class="roadmap-status planned">Planned</span>
             <div>
-              <h4>Background replacement</h4>
-              <p>Swap scenes behind subjects while preserving foreground detail.</p>
+              <h4>Compress & optimize</h4>
+              <p>Quality tuning and target file-size optimization for any format.</p>
             </div>
           </article>
           <article class="roadmap-item">
             <span class="roadmap-status planned">Planned</span>
             <div>
-              <h4>Style transfer & presets</h4>
-              <p>Apply consistent artistic styles and branded visual presets.</p>
+              <h4>Batch operations</h4>
+              <p>Apply transforms to multiple images in a single tool call.</p>
+            </div>
+          </article>
+          <article class="roadmap-item">
+            <span class="roadmap-status planned">Planned</span>
+            <div>
+              <h4>Metadata & EXIF</h4>
+              <p>Read, write, and strip image metadata on demand.</p>
+            </div>
+          </article>
+          <article class="roadmap-item">
+            <span class="roadmap-status planned">Planned</span>
+            <div>
+              <h4>Watermark & overlay</h4>
+              <p>Add text or image watermarks with positioning and opacity.</p>
             </div>
           </article>
           <article class="roadmap-item">
             <span class="roadmap-status research">Research</span>
             <div>
-              <h4>Batch generation API</h4>
-              <p>Generate multiple variants in one call for rapid iteration.</p>
+              <h4>Upscale & super-resolution</h4>
+              <p>Increase resolution and recover detail when quality matters.</p>
+            </div>
+          </article>
+          <article class="roadmap-item">
+            <span class="roadmap-status research">Research</span>
+            <div>
+              <h4>Inpainting & outpainting</h4>
+              <p>Edit parts of an image or extend the canvas beyond its edges.</p>
             </div>
           </article>
           <article class="roadmap-item">
@@ -338,13 +362,6 @@
               <p>Support for more image models beyond Google Nano Banana.</p>
             </div>
           </article>
-          <article class="roadmap-item">
-            <span class="roadmap-status research">Research</span>
-            <div>
-              <h4>Fine-tuned model hooks</h4>
-              <p>Bring custom LoRAs and fine-tuned checkpoints into the pipeline.</p>
-            </div>
-          </article>
         </div>
       </div>
     </section>
@@ -352,8 +369,8 @@
     <section class="cta" aria-labelledby="cta-title">
       <div class="container">
         <div class="cta-inner">
-          <h2 id="cta-title">Ready to add image generation to your agent?</h2>
-          <p>Join the open-source community and start generating images with img-mcp today.</p>
+          <h2 id="cta-title">Ready to give your agent image superpowers?</h2>
+          <p>Join the open-source community and start manipulating and generating images with img-mcp today.</p>
           <div class="hero-cta" style="justify-content: center;">
             <a class="button button-primary" href="https://github.com/aboubak-art/img-mcp" target="_blank" rel="noopener">View on GitHub</a>
             <a class="button button-secondary" href="docs/">Read documentation</a>
@@ -371,7 +388,7 @@
             <img src="assets/logo.svg" alt="" width="28" height="28" />
             <span>img-mcp</span>
           </a>
-          <p>Open-source image generation for the Model Context Protocol ecosystem.</p>
+          <p>Open-source image manipulation and generation for the Model Context Protocol ecosystem.</p>
         </div>
         <div class="footer-col">
           <h4>Product</h4>
