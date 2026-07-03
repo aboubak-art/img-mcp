@@ -25,6 +25,18 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build website and docs
+        run: npm run website:build
+
       - name: Set up GitHub Pages
         # Pages must be enabled manually in repo Settings first:
         # Settings -> Pages -> Source: GitHub Actions

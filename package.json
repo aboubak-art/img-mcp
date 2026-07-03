@@ -15,7 +15,10 @@
     "dev": "tsx src/index.ts",
     "lint": "tsc --noEmit",
     "test": "node --test dist/**/*.test.js",
-    "prepublishOnly": "npm run lint && npm run build && npm test"
+    "prepublishOnly": "npm run lint && npm run build && npm test",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "website:build": "npm run docs:build"
   },
   "keywords": [
     "mcp",
@@ -52,7 +55,8 @@
     "@imgly/background-removal-node": "^1.4.5",
     "@types/node": "^22.15.0",
     "tsx": "^4.19.0",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "vitepress": "^1.6.4"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -7,3 +7,8 @@ coverage/
 node_modules/
 dist/
 *.tgz
+
+# VitePress build output and cache
+website/docs/
+docs/.vitepress/cache/
+docs/.vitepress/dist/
