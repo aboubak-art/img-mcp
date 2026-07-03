@@ -50,6 +50,18 @@ You can get an API key from [Google AI Studio](https://aistudio.google.com/app/a
 | `GOOGLE_API_KEY` | Your Google Gemini API key | — |
 | `GOOGLE_IMAGE_MODEL` | Default Nano Banana model ID | `gemini-3.1-flash-image` |
 
+### Optional: transparent background support
+
+The `transparent_background` feature relies on `@imgly/background-removal-node`, which is licensed under **AGPL-3.0**. To keep `img-mcp` itself under the permissive MIT license, this dependency is **optional** and is not installed by default.
+
+To enable transparent backgrounds, install the peer dependency in your environment:
+
+```bash
+npm install -g @imgly/background-removal-node
+```
+
+Or, when using `npx`, install it alongside `img-mcp` in a local project. If `transparent_background` is requested while the package is missing, the tool returns an error with installation instructions.
+
 ## Usage with MCP hosts
 
 Add the server to your MCP host configuration (e.g., Claude Desktop, Cursor, or Windsurf):

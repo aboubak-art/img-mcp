@@ -41,7 +41,15 @@ export function appendTransparentBackgroundPrompt(prompt: string): string {
 export async function removeImageBackground(
   image: GeneratedImage
 ): Promise<GeneratedImage> {
-  const { removeBackground } = await import("@imgly/background-removal-node");
+  let removeBackground: (typeof import("@imgly/background-removal-node"))["removeBackground"];
+  try {
+    ({ removeBackground } = await import("@imgly/background-removal-node"));
+  } catch (error) {
+    throw new Error(
+      "The transparent_background feature requires the optional peer dependency @imgly/background-removal-node. Install it with: npm install @imgly/background-removal-node"
+    );
+  }
+
   const inputBuffer = Buffer.from(image.data, "base64");
   const blob = await removeBackground(inputBuffer, {
     output: { format: "image/png" },
