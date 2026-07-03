@@ -3,8 +3,6 @@ import { dirname, extname, basename, join } from "node:path";
 import sharp, { type ResizeOptions as SharpResizeOptions, type Sharp } from "sharp";
 import type { GeneratedImage } from "../types.js";
 
-export const TRANSPARENT_BACKGROUND_COLOR = "#00FF00";
-
 export interface ParsedImageInput {
   data: string;
   mimeType: string;
@@ -372,10 +370,6 @@ export async function saveImagesToDisk(
   return paths;
 }
 
-export function appendTransparentBackgroundPrompt(prompt: string): string {
-  return `${prompt} The subject should be placed against a solid, uniform bright green background (hex ${TRANSPARENT_BACKGROUND_COLOR}) with no shadows, gradients, reflections, or additional objects in the background.`;
-}
-
 export async function removeImageBackground(
   image: GeneratedImage
 ): Promise<GeneratedImage> {
@@ -384,17 +378,23 @@ export async function removeImageBackground(
     ({ removeBackground } = await import("@imgly/background-removal-node"));
   } catch (error) {
     throw new Error(
-      "The transparent_background feature requires the optional peer dependency @imgly/background-removal-node. Install it with: npm install @imgly/background-removal-node"
+      "The remove_background tool requires the optional peer dependency @imgly/background-removal-node. Install it with: npm install @imgly/background-removal-node"
     );
   }
 
   const inputBuffer = Buffer.from(image.data, "base64");
-  const blob = await removeBackground(inputBuffer, {
+  const inputBlob = new Blob([inputBuffer], { type: image.mimeType });
+  const blob = await removeBackground(inputBlob, {
     output: { format: "image/png" },
   });
   const arrayBuffer = await blob.arrayBuffer();
   const outputBuffer = Buffer.from(arrayBuffer);
   return { data: outputBuffer.toString("base64"), mimeType: "image/png" };
+}
+
+export async function removeBackgroundFromImage(input: string): Promise<GeneratedImage> {
+  const parsed = await loadImageInput(input);
+  return removeImageBackground(parsed);
 }
 
 export function ensurePngExtension(outputPath: string): string {

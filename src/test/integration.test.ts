@@ -34,6 +34,7 @@ describe("img-mcp server", () => {
       assert.ok(names.includes("convert_image"));
       assert.ok(names.includes("crop_image"));
       assert.ok(names.includes("compress_image"));
+      assert.ok(names.includes("remove_background"));
     });
   });
 
@@ -47,20 +48,6 @@ describe("img-mcp server", () => {
       assert.ok(
         Object.prototype.hasOwnProperty.call(schema.properties, "images"),
         "generate_image schema is missing images property"
-      );
-    });
-  });
-
-  it("exposes a transparent_background argument on generate_image", async () => {
-    await withClient(async (client) => {
-      const tools = await client.listTools();
-      const tool = tools.tools.find((t) => t.name === "generate_image");
-      assert.ok(tool, "generate_image tool not found");
-      const schema = tool.inputSchema as { properties?: Record<string, unknown> };
-      assert.ok(schema.properties, "tool schema has no properties");
-      assert.ok(
-        Object.prototype.hasOwnProperty.call(schema.properties, "transparent_background"),
-        "generate_image schema is missing transparent_background property"
       );
     });
   });

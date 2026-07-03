@@ -4,11 +4,9 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
-  appendTransparentBackgroundPrompt,
   ensurePngExtension,
   parseImageInput,
   saveImagesToDisk,
-  TRANSPARENT_BACKGROUND_COLOR,
 } from "../utils/image.js";
 
 async function withTempDir<T>(callback: (dir: string) => Promise<T>): Promise<T> {
@@ -79,15 +77,6 @@ describe("utils/image", () => {
         const paths = await saveImagesToDisk([], join(dir, "image.png"));
         assert.deepStrictEqual(paths, []);
       });
-    });
-  });
-
-  describe("appendTransparentBackgroundPrompt", () => {
-    it("appends the chroma key background instruction", () => {
-      const result = appendTransparentBackgroundPrompt("a cat sitting on a box");
-      assert.ok(result.includes("a cat sitting on a box"));
-      assert.ok(result.includes(TRANSPARENT_BACKGROUND_COLOR));
-      assert.ok(result.includes("solid, uniform bright green background"));
     });
   });
 

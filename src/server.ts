@@ -3,6 +3,7 @@ import { registerCompressImageTool } from "./tools/compress.js";
 import { registerConvertImageTool } from "./tools/convert.js";
 import { registerCropImageTool } from "./tools/crop.js";
 import { registerGenerateImageTool } from "./tools/generate-image.js";
+import { registerRemoveBackgroundTool } from "./tools/remove-background.js";
 import { registerResizeImageTool } from "./tools/resize.js";
 
 export function createServer(): McpServer {
@@ -16,6 +17,7 @@ export function createServer(): McpServer {
   registerConvertImageTool(server);
   registerCropImageTool(server);
   registerCompressImageTool(server);
+  registerRemoveBackgroundTool(server);
 
   return server;
 }

@@ -6,7 +6,6 @@ export interface ImageGenerationOptions {
   imageSize: string;
   outputPath?: string;
   images?: string[];
-  transparentBackground?: boolean;
 }
 
 export interface GeneratedImage {

@@ -56,17 +56,17 @@ Supported `image_size` values are `512`, `1K`, `2K`, and `4K`. Note that `2K` an
 | `GOOGLE_API_KEY` | Your Google Gemini API key | — |
 | `GOOGLE_IMAGE_MODEL` | Default Nano Banana model ID | `gemini-3.1-flash-image` |
 
-### Optional: transparent background support
+### Optional: background removal support
 
-The `transparent_background` feature relies on `@imgly/background-removal-node`, which is licensed under **AGPL-3.0**. To keep `img-mcp` itself under the permissive MIT license, this dependency is **optional** and is not installed by default.
+The `remove_background` tool relies on `@imgly/background-removal-node`, which is licensed under **AGPL-3.0**. To keep `img-mcp` itself under the permissive MIT license, this dependency is **optional** and is not installed by default.
 
-To enable transparent backgrounds, install the peer dependency in your environment:
+To enable background removal, install the peer dependency in your environment:
 
 ```bash
 npm install -g @imgly/background-removal-node
 ```
 
-Or, when using `npx`, install it alongside `img-mcp` in a local project. If `transparent_background` is requested while the package is missing, the tool returns an error with installation instructions.
+Or, when using `npx`, install it alongside `img-mcp` in a local project. If `remove_background` is called while the package is missing, the tool returns an error with installation instructions.
 
 ## Usage with MCP hosts
 
@@ -102,8 +102,7 @@ Generates images from a text prompt.
 | `aspect_ratio` | `string` | No | `1:1` | Aspect ratio (`1:1`, `16:9`, `9:16`, `3:2`, `2:3`, `4:3`, `3:4`, `4:5`, `5:4`, `21:9`) |
 | `image_size` | `string` | No | `1K` | Image size (`512`, `1K`, `2K`, `4K`). Larger sizes may require a model such as `gemini-3-pro-image`. |
 | `output_path` | `string` | No | — | If provided, saves the generated image(s) to disk at this path and returns the file path(s) instead of base64 |
-| `images` | `string` or `string[]` | No | — | One or more reference images as base64 strings or data URIs (`data:image/png;base64,...`) |
-| `transparent_background` | `boolean` | No | `false` | When `true`, the prompt is rewritten to request a bright green background and the background is removed after generation; output is always PNG |
+| `images` | `string` or `string[]` | No | — | One or more reference images as base64 strings, data URIs, file paths, or URLs |
 
 **Example**
 
@@ -129,23 +128,10 @@ Generates images from a text prompt.
 }
 ```
 
-**Example with transparent background**
-
-```json
-{
-  "prompt": "A golden retriever wearing sunglasses",
-  "aspect_ratio": "1:1",
-  "image_size": "1K",
-  "transparent_background": true,
-  "output_path": "/tmp/dog.png"
-}
-```
-
 **Output behavior**
 
 - If `output_path` is provided, the generated image(s) are written to disk and the tool returns the saved file path(s). When `n` is greater than 1, additional images are saved with numbered suffixes (e.g., `image_1.png`, `image_2.png`).
 - If `output_path` is omitted, the generated image(s) are returned as base64 content.
-- When `transparent_background` is `true`, the output is always a PNG with transparency and `output_path` is rewritten to use the `.png` extension.
 
 ### `resize_image`
 
@@ -206,6 +192,31 @@ Scale by percentage and convert to WebP:
 - If `output_path` is omitted, the resized image is returned as base64 content.
 - When only `width` or `height` is provided, the aspect ratio is preserved.
 - When `format` is omitted, the output format matches the input image format.
+
+### `remove_background`
+
+Removes the background from an image and returns a transparent PNG. Requires the optional peer dependency `@imgly/background-removal-node`.
+
+**Arguments**
+
+| Argument | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `image` | `string` | Yes | — | Input image as a base64 string, data URI, file path, or URL |
+| `output_path` | `string` | No | — | If provided, saves the result as a PNG and returns the file path |
+
+**Example**
+
+```json
+{
+  "image": "/path/to/photo.jpg",
+  "output_path": "/path/to/photo-transparent.png"
+}
+```
+
+**Output behavior**
+
+- The output is always a transparent PNG.
+- If `output_path` is provided, the extension is forced to `.png`.
 
 ## Development
 
