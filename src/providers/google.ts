@@ -35,7 +35,7 @@ const SUPPORTED_ASPECT_RATIOS = [
   "21:9",
 ];
 
-const SUPPORTED_IMAGE_SIZES = ["512px (05.K)", "1K", "2K", "4K"];
+const SUPPORTED_IMAGE_SIZES = ["512", "1K", "2K", "4K"];
 
 export function validateImageGenerationOptions(
   options: ImageGenerationOptions
@@ -132,7 +132,13 @@ export async function generateImages(
   if (!response.ok) {
     const message = responseData.error?.message ?? response.statusText;
     const status = responseData.error?.status ?? String(response.status);
-    throw new Error(`Google API error (${status}): ${message}`);
+    let errorText = `Google API error (${status}): ${message}`;
+
+    if (response.status === 404) {
+      errorText += ` This may mean the model '${options.model}' does not support image_size '${options.imageSize}'. Try '1K', or use a model such as 'gemini-3-pro-image' if you need larger sizes.`;
+    }
+
+    throw new Error(errorText);
   }
 
   const images: GeneratedImage[] = [];

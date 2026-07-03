@@ -23,7 +23,7 @@ const AspectRatioSchema = z.enum([
   "21:9",
 ]);
 
-const ImageSizeSchema = z.enum(["512px (05.K)", "1K", "2K", "4K"]);
+const ImageSizeSchema = z.enum(["512", "1K", "2K", "4K"]);
 
 const GenerateImageArgsSchema = z.object({
   prompt: z.string().min(1, "Prompt is required"),

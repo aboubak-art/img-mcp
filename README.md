@@ -43,6 +43,10 @@ export GOOGLE_API_KEY="your-google-api-key"
 
 You can get an API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
 
+### Image sizes
+
+Supported `image_size` values are `512`, `1K`, `2K`, and `4K`. Note that `2K` and `4K` require a Nano Banana model that supports high-resolution output, such as `gemini-3-pro-image`. The default `gemini-3.1-flash-image` model typically supports `512` and `1K`.
+
 ### Optional environment variables
 
 | Variable | Description | Default |
@@ -94,7 +98,7 @@ Generates images from a text prompt.
 | `model` | `string` | No | `gemini-3.1-flash-image` | Nano Banana model ID |
 | `n` | `number` | No | `1` | Number of images to generate (1–4) |
 | `aspect_ratio` | `string` | No | `1:1` | Aspect ratio (`1:1`, `16:9`, `9:16`, `3:2`, `2:3`, `4:3`, `3:4`, `4:5`, `5:4`, `21:9`) |
-| `image_size` | `string` | No | `1K` | Image size (`512px (05.K)`, `1K`, `2K`, `4K`) |
+| `image_size` | `string` | No | `1K` | Image size (`512`, `1K`, `2K`, `4K`). Larger sizes may require a model such as `gemini-3-pro-image`. |
 | `output_path` | `string` | No | — | If provided, saves the generated image(s) to disk at this path and returns the file path(s) instead of base64 |
 | `images` | `string` or `string[]` | No | — | One or more reference images as base64 strings or data URIs (`data:image/png;base64,...`) |
 | `transparent_background` | `boolean` | No | `false` | When `true`, the prompt is rewritten to request a bright green background and the background is removed after generation; output is always PNG |
