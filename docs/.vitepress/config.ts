@@ -52,6 +52,7 @@ export default defineConfig({
           { text: "generate_image", link: "/docs/tools/generate-image.html" },
           { text: "resize_image", link: "/docs/tools/resize.html" },
           { text: "convert_image", link: "/docs/tools/convert.html" },
+          { text: "crop_image", link: "/docs/tools/crop.html" },
         ],
       },
       {
